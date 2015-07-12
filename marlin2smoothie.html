@@ -56,991 +56,1020 @@
 		</div><!-- /.container -->
 
 		<div class="row">
-			<div class="col-md-5">
-				1 - Paste your Marlin configuration.h here
-				<br/>(See it on the <a href="https://github.com/ErikZalm/Marlin/blob/Stable/Marlin/Configuration.h">Marlin GitHub</a>)
-				<br/>
-				<textarea name="marlinconfig">
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
-#include "boards.h"
-// This configuration file contains the basic settings.
-// Advanced settings can be found in Configuration_adv.h
-// BASIC SETTINGS: select your board type, temperature sensor type, axis scaling, and endstop configuration
-//===========================================================================
-//============================= DELTA Printer ===============================
-//===========================================================================
-// For a Delta printer replace the configuration files with the files in the
-// example_configurations/delta directory.
-//
-//===========================================================================
-//============================= SCARA Printer ===============================
-//===========================================================================
-// For a Delta printer replace the configuration files with the files in the
-// example_configurations/SCARA directory.
-//
-// User-specified version info of this build to display in [Pronterface, etc] terminal window during
-// startup. Implementation of an idea by Prof Braino to inform user that any changes made to this
-					// build by the user have been successfully uploaded into firmware.
-					#define STRING_VERSION_CONFIG_H __DATE__ " " __TIME__ // build date and time
-					#define STRING_CONFIG_H_AUTHOR "(none, default config)" // Who made the changes.
-					// SERIAL_PORT selects which serial port should be used for communication with the host.
-					// This allows the connection of wireless adapters (for instance) to non-default port pins.
-					// Serial port 0 is still used by the Arduino bootloader regardless of this setting.
-					#define SERIAL_PORT 0
-					// This determines the communication speed of the printer
-					#define BAUDRATE 250000
-					// This enables the serial port associated to the Bluetooth interface
-					//#define BTENABLED // Enable BT interface on AT90USB devices
-					// The following define selects which electronics board you have.
-					// Please choose the name from boards.h that matches your setup
-					#ifndef MOTHERBOARD
-					#define MOTHERBOARD BOARD_ULTIMAKER
-					#endif
-					// Define this to set a custom name for your generic Mendel,
-					// #define CUSTOM_MENDEL_NAME "This Mendel"
-					// Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
-					// You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
-					// #define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
-					// This defines the number of extruders
-					#define EXTRUDERS 1
-					//// The following define selects which power supply you have. Please choose the one that matches your setup
-					// 1 = ATX
-					// 2 = X-Box 360 203Watts (the blue wire connected to PS_ON and the red wire to VCC)
-					#define POWER_SUPPLY 1
-					// Define this to have the electronics keep the power supply off on startup. If you don't know what this is leave it.
-					// #define PS_DEFAULT_OFF
-					//===========================================================================
-					//=============================Thermal Settings ============================
-					//===========================================================================
-					//
-					//--NORMAL IS 4.7kohm PULLUP!-- 1kohm pullup can be used on hotend sensor, using correct resistor and table
-					//
-					//// Temperature sensor settings:
-					// -2 is thermocouple with MAX6675 (only for sensor 0)
-					// -1 is thermocouple with AD595
-					// 0 is not used
-					// 1 is 100k thermistor - best choice for EPCOS 100k (4.7k pullup)
-					// 2 is 200k thermistor - ATC Semitec 204GT-2 (4.7k pullup)
-					// 3 is Mendel-parts thermistor (4.7k pullup)
-					// 4 is 10k thermistor !! do not use it for a hotend. It gives bad resolution at high temp. !!
-					// 5 is 100K thermistor - ATC Semitec 104GT-2 (Used in ParCan & J-Head) (4.7k pullup)
-					// 6 is 100k EPCOS - Not as accurate as table 1 (created using a fluke thermocouple) (4.7k pullup)
-					// 7 is 100k Honeywell thermistor 135-104LAG-J01 (4.7k pullup)
-					// 71 is 100k Honeywell thermistor 135-104LAF-J01 (4.7k pullup)
-					// 8 is 100k 0603 SMD Vishay NTCS0603E3104FXT (4.7k pullup)
-					// 9 is 100k GE Sensing AL03006-58.2K-97-G1 (4.7k pullup)
-					// 10 is 100k RS thermistor 198-961 (4.7k pullup)
-					// 11 is 100k beta 3950 1% thermistor (4.7k pullup)
-					// 12 is 100k 0603 SMD Vishay NTCS0603E3104FXT (4.7k pullup) (calibrated for Makibox hot bed)
-					// 13 is 100k Hisens 3950 1% up to 300°C for hotend "Simple ONE " & "Hotend "All In ONE"
-					// 20 is the PT100 circuit found in the Ultimainboard V2.x
-					// 60 is 100k Maker's Tool Works Kapton Bed Thermistor beta=3950
-					//
-					// 1k ohm pullup tables - This is not normal, you would have to have changed out your 4.7k for 1k
-					// (but gives greater accuracy and more stable PID)
-					// 51 is 100k thermistor - EPCOS (1k pullup)
-					// 52 is 200k thermistor - ATC Semitec 204GT-2 (1k pullup)
-					// 55 is 100k thermistor - ATC Semitec 104GT-2 (Used in ParCan & J-Head) (1k pullup)
-					//
-					// 1047 is Pt1000 with 4k7 pullup
-					// 1010 is Pt1000 with 1k pullup (non standard)
-					// 147 is Pt100 with 4k7 pullup
-					// 110 is Pt100 with 1k pullup (non standard)
-					#define TEMP_SENSOR_0 -1
-					#define TEMP_SENSOR_1 -1
-					#define TEMP_SENSOR_2 0
-					#define TEMP_SENSOR_BED 0
-					// This makes temp sensor 1 a redundant sensor for sensor 0. If the temperatures difference between these sensors is to high the print will be aborted.
-					//#define TEMP_SENSOR_1_AS_REDUNDANT
-					#define MAX_REDUNDANT_TEMP_SENSOR_DIFF 10
-					// Actual temperature must be close to target for this long before M109 returns success
-					#define TEMP_RESIDENCY_TIME 10 // (seconds)
-					#define TEMP_HYSTERESIS 3 // (degC) range of +/- temperatures considered "close" to the target one
-					#define TEMP_WINDOW 1 // (degC) Window around target to start the residency timer x degC early.
-					// The minimal temperature defines the temperature below which the heater will not be enabled It is used
-					// to check that the wiring to the thermistor is not broken.
-					// Otherwise this would lead to the heater being powered on all the time.
-					#define HEATER_0_MINTEMP 5
-					#define HEATER_1_MINTEMP 5
-					#define HEATER_2_MINTEMP 5
-					#define BED_MINTEMP 5
-					// When temperature exceeds max temp, your heater will be switched off.
-					// This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
-					// You should use MINTEMP for thermistor short/failure protection.
-					#define HEATER_0_MAXTEMP 275
-					#define HEATER_1_MAXTEMP 275
-					#define HEATER_2_MAXTEMP 275
-					#define BED_MAXTEMP 150
-					// If your bed has low resistance e.g. .6 ohm and throws the fuse you can duty cycle it to reduce the
-					// average current. The value should be an integer and the heat bed will be turned on for 1 interval of
-					// HEATER_BED_DUTY_CYCLE_DIVIDER intervals.
-					//#define HEATER_BED_DUTY_CYCLE_DIVIDER 4
-					// If you want the M105 heater power reported in watts, define the BED_WATTS, and (shared for all extruders) EXTRUDER_WATTS
-					//#define EXTRUDER_WATTS (12.0*12.0/6.7) // P=I^2/R
-					//#define BED_WATTS (12.0*12.0/1.1) // P=I^2/R
-					// PID settings:
-					// Comment the following line to disable PID and enable bang-bang.
-					#define PIDTEMP
-					#define BANG_MAX 255 // limits current to nozzle while in bang-bang mode; 255=full current
-					#define PID_MAX BANG_MAX // limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
-					#ifdef PIDTEMP
-					//#define PID_DEBUG // Sends debug data to the serial port.
-					//#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
-					#define PID_FUNCTIONAL_RANGE 10 // If the temperature difference between the target temperature and the actual temperature
-					// is more then PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
-					#define PID_INTEGRAL_DRIVE_MAX PID_MAX //limit for the integral term
-					#define K1 0.95 //smoothing factor within the PID
-					#define PID_dT ((OVERSAMPLENR * 10.0)/(F_CPU / 64.0 / 256.0)) //sampling period of the temperature routine
-					// If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
-					// Ultimaker
-					#define DEFAULT_Kp 22.2
-					#define DEFAULT_Ki 1.08
-					#define DEFAULT_Kd 114
-					// MakerGear
-					// #define DEFAULT_Kp 7.0
-					// #define DEFAULT_Ki 0.1
-					// #define DEFAULT_Kd 12
-					// Mendel Parts V9 on 12V
-					// #define DEFAULT_Kp 63.0
-					// #define DEFAULT_Ki 2.25
-					// #define DEFAULT_Kd 440
-					#endif // PIDTEMP
-					// Bed Temperature Control
-					// Select PID or bang-bang with PIDTEMPBED. If bang-bang, BED_LIMIT_SWITCHING will enable hysteresis
-					//
-					// Uncomment this to enable PID on the bed. It uses the same frequency PWM as the extruder.
-					// If your PID_dT above is the default, and correct for your hardware/configuration, that means 7.689Hz,
-					// which is fine for driving a square wave into a resistive load and does not significantly impact you FET heating.
-					// This also works fine on a Fotek SSR-10DA Solid State Relay into a 250W heater.
-					// If your configuration is significantly different than this and you don't understand the issues involved, you probably
-					// shouldn't use bed PID until someone else verifies your hardware works.
-					// If this is enabled, find your own PID constants below.
-					//#define PIDTEMPBED
-					//
-					//#define BED_LIMIT_SWITCHING
-					// This sets the max power delivered to the bed, and replaces the HEATER_BED_DUTY_CYCLE_DIVIDER option.
-					// all forms of bed control obey this (PID, bang-bang, bang-bang with hysteresis)
-					// setting this to anything other than 255 enables a form of PWM to the bed just like HEATER_BED_DUTY_CYCLE_DIVIDER did,
-					// so you shouldn't use it unless you are OK with PWM on your bed. (see the comment on enabling PIDTEMPBED)
-					#define MAX_BED_POWER 255 // limits duty cycle to bed; 255=full current
-					#ifdef PIDTEMPBED
-					//120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-					//from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-					#define DEFAULT_bedKp 10.00
-					#define DEFAULT_bedKi .023
-					#define DEFAULT_bedKd 305.4
-					//120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-					//from pidautotune
-					// #define DEFAULT_bedKp 97.1
-					// #define DEFAULT_bedKi 1.41
-					// #define DEFAULT_bedKd 1675.16
-					// FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
-					#endif // PIDTEMPBED
-					//this prevents dangerous Extruder moves, i.e. if the temperature is under the limit
-					//can be software-disabled for whatever purposes by
-					#define PREVENT_DANGEROUS_EXTRUDE
-					//if PREVENT_DANGEROUS_EXTRUDE is on, you can still disable (uncomment) very long bits of extrusion separately.
-					#define PREVENT_LENGTHY_EXTRUDE
-					#define EXTRUDE_MINTEMP 170
-					#define EXTRUDE_MAXLENGTH (X_MAX_LENGTH+Y_MAX_LENGTH) //prevent extrusion of very large distances.
-					/*================== Thermal Runaway Protection ==============================
-					This is a feature to protect your printer from burn up in flames if it has
-					a thermistor coming off place (this happened to a friend of mine recently and
-					motivated me writing this feature).
-					The issue: If a thermistor come off, it will read a lower temperature than actual.
-					The system will turn the heater on forever, burning up the filament and anything
-					else around.
-					After the temperature reaches the target for the first time, this feature will
-					start measuring for how long the current temperature stays below the target
-					minus _HYSTERESIS (set_temperature - THERMAL_RUNAWAY_PROTECTION_HYSTERESIS).
-					If it stays longer than _PERIOD, it means the thermistor temperature
-					cannot catch up with the target, so something *may be* wrong. Then, to be on the
-					safe side, the system will he halt.
-					Bear in mind the count down will just start AFTER the first time the
-					thermistor temperature is over the target, so you will have no problem if
-					your extruder heater takes 2 minutes to hit the target on heating.
-					*/
-					// If you want to enable this feature for all your extruder heaters,
-					// uncomment the 2 defines below:
-					// Parameters for all extruder heaters
-					//#define THERMAL_RUNAWAY_PROTECTION_PERIOD 40 //in seconds
-					//#define THERMAL_RUNAWAY_PROTECTION_HYSTERESIS 4 // in degree Celsius
-					// If you want to enable this feature for your bed heater,
-					// uncomment the 2 defines below:
-					// Parameters for the bed heater
-					//#define THERMAL_RUNAWAY_PROTECTION_BED_PERIOD 20 //in seconds
-					//#define THERMAL_RUNAWAY_PROTECTION_BED_HYSTERESIS 2 // in degree Celsius
-					//===========================================================================
-					//===========================================================================
-					//=============================Mechanical Settings===========================
-					//===========================================================================
-					// Uncomment the following line to enable CoreXY kinematics
-					// #define COREXY
-					// coarse Endstop Settings
-					#define ENDSTOPPULLUPS // Comment this out (using // at the start of the line) to disable the endstop pullup resistors
-					#ifndef ENDSTOPPULLUPS
-					// fine endstop settings: Individual pullups. will be ignored if ENDSTOPPULLUPS is defined
-					// #define ENDSTOPPULLUP_XMAX
-					// #define ENDSTOPPULLUP_YMAX
-					// #define ENDSTOPPULLUP_ZMAX
-					// #define ENDSTOPPULLUP_XMIN
-					// #define ENDSTOPPULLUP_YMIN
-					// #define ENDSTOPPULLUP_ZMIN
-					#endif
-					#ifdef ENDSTOPPULLUPS
-					#define ENDSTOPPULLUP_XMAX
-					#define ENDSTOPPULLUP_YMAX
-					#define ENDSTOPPULLUP_ZMAX
-					#define ENDSTOPPULLUP_XMIN
-					#define ENDSTOPPULLUP_YMIN
-					#define ENDSTOPPULLUP_ZMIN
-					#endif
-					// The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
-					const bool X_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
-					const bool Y_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
-					const bool Z_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
-					const bool X_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
-					const bool Y_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
-					const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
-					//#define DISABLE_MAX_ENDSTOPS
-					//#define DISABLE_MIN_ENDSTOPS
-					// Disable max endstops for compatibility with endstop checking routine
-					#if defined(COREXY) && !defined(DISABLE_MAX_ENDSTOPS)
-					#define DISABLE_MAX_ENDSTOPS
-					#endif
-					// For Inverting Stepper Enable Pins (Active Low) use 0, Non Inverting (Active High) use 1
-					#define X_ENABLE_ON 0
-					#define Y_ENABLE_ON 0
-					#define Z_ENABLE_ON 0
-					#define E_ENABLE_ON 0 // For all extruders
-					// Disables axis when it's not being used.
-					#define DISABLE_X false
-					#define DISABLE_Y false
-					#define DISABLE_Z false
-					#define DISABLE_E false // For all extruders
-					#define DISABLE_INACTIVE_EXTRUDER true //disable only inactive extruders and keep active extruder enabled
-					#define INVERT_X_DIR true // for Mendel set to false, for Orca set to true
-					#define INVERT_Y_DIR false // for Mendel set to true, for Orca set to false
-					#define INVERT_Z_DIR true // for Mendel set to false, for Orca set to true
-					#define INVERT_E0_DIR false // for direct drive extruder v9 set to true, for geared extruder set to false
-					#define INVERT_E1_DIR false // for direct drive extruder v9 set to true, for geared extruder set to false
-					#define INVERT_E2_DIR false // for direct drive extruder v9 set to true, for geared extruder set to false
-					// ENDSTOP SETTINGS:
-					// Sets direction of endstops when homing; 1=MAX, -1=MIN
-					#define X_HOME_DIR -1
-					#define Y_HOME_DIR -1
-					#define Z_HOME_DIR -1
-					#define min_software_endstops true // If true, axis won't move to coordinates less than HOME_POS.
-					#define max_software_endstops true // If true, axis won't move to coordinates greater than the defined lengths below.
-					// Travel limits after homing
-					#define X_MAX_POS 205
-					#define X_MIN_POS 0
-					#define Y_MAX_POS 205
-					#define Y_MIN_POS 0
-					#define Z_MAX_POS 200
-					#define Z_MIN_POS 0
-					#define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
-					#define Y_MAX_LENGTH (Y_MAX_POS - Y_MIN_POS)
-					#define Z_MAX_LENGTH (Z_MAX_POS - Z_MIN_POS)
-					//============================= Bed Auto Leveling ===========================
-					//#define ENABLE_AUTO_BED_LEVELING // Delete the comment to enable (remove // at the start of the line)
-					#define Z_PROBE_REPEATABILITY_TEST // If not commented out, Z-Probe Repeatability test will be included if Auto Bed Leveling is Enabled.
-					#ifdef ENABLE_AUTO_BED_LEVELING
-					// There are 2 different ways to pick the X and Y locations to probe:
-					// - "grid" mode
-					// Probe every point in a rectangular grid
-					// You must specify the rectangle, and the density of sample points
-					// This mode is preferred because there are more measurements.
-					// It used to be called ACCURATE_BED_LEVELING but "grid" is more descriptive
-					// - "3-point" mode
-					// Probe 3 arbitrary points on the bed (that aren't colinear)
-					// You must specify the X & Y coordinates of all 3 points
-					#define AUTO_BED_LEVELING_GRID
-					// with AUTO_BED_LEVELING_GRID, the bed is sampled in a
-					// AUTO_BED_LEVELING_GRID_POINTSxAUTO_BED_LEVELING_GRID_POINTS grid
-					// and least squares solution is calculated
-					// Note: this feature occupies 10'206 byte
-					#ifdef AUTO_BED_LEVELING_GRID
-					// set the rectangle in which to probe
-					#define LEFT_PROBE_BED_POSITION 15
-					#define RIGHT_PROBE_BED_POSITION 170
-					#define BACK_PROBE_BED_POSITION 180
-					#define FRONT_PROBE_BED_POSITION 20
-					// set the number of grid points per dimension
-					// I wouldn't see a reason to go above 3 (=9 probing points on the bed)
-					#define AUTO_BED_LEVELING_GRID_POINTS 2
-					#else // not AUTO_BED_LEVELING_GRID
-					// with no grid, just probe 3 arbitrary points. A simple cross-product
-					// is used to esimate the plane of the print bed
-					#define ABL_PROBE_PT_1_X 15
-					#define ABL_PROBE_PT_1_Y 180
-					#define ABL_PROBE_PT_2_X 15
-					#define ABL_PROBE_PT_2_Y 20
-					#define ABL_PROBE_PT_3_X 170
-					#define ABL_PROBE_PT_3_Y 20
-					#endif // AUTO_BED_LEVELING_GRID
-					// these are the offsets to the probe relative to the extruder tip (Hotend - Probe)
-					#define X_PROBE_OFFSET_FROM_EXTRUDER -25
-					#define Y_PROBE_OFFSET_FROM_EXTRUDER -29
-					#define Z_PROBE_OFFSET_FROM_EXTRUDER -12.35
-					#define Z_RAISE_BEFORE_HOMING 4 // (in mm) Raise Z before homing (G28) for Probe Clearance.
-					// Be sure you have this distance over your Z_MAX_POS in case
-					#define XY_TRAVEL_SPEED 8000 // X and Y axis travel speed between probes, in mm/min
-					#define Z_RAISE_BEFORE_PROBING 15 //How much the extruder will be raised before traveling to the first probing point.
-					#define Z_RAISE_BETWEEN_PROBINGS 5 //How much the extruder will be raised when traveling from between next probing points
-					//#define Z_PROBE_SLED // turn on if you have a z-probe mounted on a sled like those designed by Charles Bell
-					//#define SLED_DOCKING_OFFSET 5 // the extra distance the X axis must travel to pickup the sled. 0 should be fine but you can push it further if you'd like.
-					//If defined, the Probe servo will be turned on only during movement and then turned off to avoid jerk
-					//The value is the delay to turn the servo off after powered on - depends on the servo speed; 300ms is good value, but you can try lower it.
-					// You MUST HAVE the SERVO_ENDSTOPS defined to use here a value higher than zero otherwise your code will not compile.
-					// #define PROBE_SERVO_DEACTIVATION_DELAY 300
-					//If you have enabled the Bed Auto Leveling and are using the same Z Probe for Z Homing,
-					//it is highly recommended you let this Z_SAFE_HOMING enabled!!!
-					#define Z_SAFE_HOMING // This feature is meant to avoid Z homing with probe outside the bed area.
-					// When defined, it will:
-					// - Allow Z homing only after X and Y homing AND stepper drivers still enabled
-					// - If stepper drivers timeout, it will need X and Y homing again before Z homing
-					// - Position the probe in a defined XY point before Z Homing when homing all axis (G28)
-					// - Block Z homing only when the probe is outside bed area.
-					#ifdef Z_SAFE_HOMING
-					#define Z_SAFE_HOMING_X_POINT (X_MAX_LENGTH/2) // X point for Z homing when homing all axis (G28)
-					#define Z_SAFE_HOMING_Y_POINT (Y_MAX_LENGTH/2) // Y point for Z homing when homing all axis (G28)
-					#endif
-					#ifdef AUTO_BED_LEVELING_GRID // Check if Probe_Offset * Grid Points is greater than Probing Range
-					#if X_PROBE_OFFSET_FROM_EXTRUDER < 0
-					#if (-(X_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (RIGHT_PROBE_BED_POSITION - LEFT_PROBE_BED_POSITION))
-					#error "The X axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
-					#endif
-					#else
-					#if ((X_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (RIGHT_PROBE_BED_POSITION - LEFT_PROBE_BED_POSITION))
-					#error "The X axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
-					#endif
-					#endif
-					#if Y_PROBE_OFFSET_FROM_EXTRUDER < 0
-					#if (-(Y_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (BACK_PROBE_BED_POSITION - FRONT_PROBE_BED_POSITION))
-					#error "The Y axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
-					#endif
-					#else
-					#if ((Y_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (BACK_PROBE_BED_POSITION - FRONT_PROBE_BED_POSITION))
-					#error "The Y axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
-					#endif
-					#endif
-					#endif
-					#endif // ENABLE_AUTO_BED_LEVELING
-					// The position of the homing switches
-					//#define MANUAL_HOME_POSITIONS // If defined, MANUAL_*_HOME_POS below will be used
-					//#define BED_CENTER_AT_0_0 // If defined, the center of the bed is at (X=0, Y=0)
-					//Manual homing switch locations:
-					// For deltabots this means top and center of the Cartesian print volume.
-					#define MANUAL_X_HOME_POS 0
-					#define MANUAL_Y_HOME_POS 0
-					#define MANUAL_Z_HOME_POS 0
-					//#define MANUAL_Z_HOME_POS 402 // For delta: Distance between nozzle and print surface after homing.
-					//// MOVEMENT SETTINGS
-					#define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
-					#define HOMING_FEEDRATE {50*60, 50*60, 4*60, 0} // set the homing speeds (mm/min)
-					// default settings
-					#define DEFAULT_AXIS_STEPS_PER_UNIT {78.7402,78.7402,200.0*8/3,760*1.1} // default steps per unit for Ultimaker
-					#define DEFAULT_MAX_FEEDRATE {500, 500, 5, 25} // (mm/sec)
-					#define DEFAULT_MAX_ACCELERATION {9000,9000,100,10000} // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
-					#define DEFAULT_ACCELERATION 3000 // X, Y, Z and E max acceleration in mm/s^2 for printing moves
-					#define DEFAULT_RETRACT_ACCELERATION 3000 // X, Y, Z and E max acceleration in mm/s^2 for retracts
-					// Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
-					// The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
-					// For the other hotends it is their distance from the extruder 0 hotend.
-					// #define EXTRUDER_OFFSET_X {0.0, 20.00} // (in mm) for each extruder, offset of the hotend on the X axis
-					// #define EXTRUDER_OFFSET_Y {0.0, 5.00} // (in mm) for each extruder, offset of the hotend on the Y axis
-					// The speed change that does not require acceleration (i.e. the software might assume it can be done instantaneously)
-					#define DEFAULT_XYJERK 20.0 // (mm/sec)
-					#define DEFAULT_ZJERK 0.4 // (mm/sec)
-					#define DEFAULT_EJERK 5.0 // (mm/sec)
-					//===========================================================================
-					//=============================Additional Features===========================
-					//===========================================================================
-					// Custom M code points
-					#define CUSTOM_M_CODES
-					#ifdef CUSTOM_M_CODES
-					#define CUSTOM_M_CODE_SET_Z_PROBE_OFFSET 851
-					#define Z_PROBE_OFFSET_RANGE_MIN -15
-					#define Z_PROBE_OFFSET_RANGE_MAX -5
-					#endif
-					// EEPROM
-					// The microcontroller can store settings in the EEPROM, e.g. max velocity...
-					// M500 - stores parameters in EEPROM
-					// M501 - reads parameters from EEPROM (if you need reset them after you changed them temporarily).
-					// M502 - reverts to the default "factory settings". You still need to store them in EEPROM afterwards if you want to.
-					//define this to enable EEPROM support
-					//#define EEPROM_SETTINGS
-					//to disable EEPROM Serial responses and decrease program space by ~1700 byte: comment this out:
-					// please keep turned on if you can.
-					//#define EEPROM_CHITCHAT
-					// Preheat Constants
-					#define PLA_PREHEAT_HOTEND_TEMP 180
-					#define PLA_PREHEAT_HPB_TEMP 70
-					#define PLA_PREHEAT_FAN_SPEED 255 // Insert Value between 0 and 255
-					#define ABS_PREHEAT_HOTEND_TEMP 240
-					#define ABS_PREHEAT_HPB_TEMP 100
-					#define ABS_PREHEAT_FAN_SPEED 255 // Insert Value between 0 and 255
-					//LCD and SD support
-					//#define ULTRA_LCD //general LCD support, also 16x2
-					//#define DOGLCD // Support for SPI LCD 128x64 (Controller ST7565R graphic Display Family)
-					//#define SDSUPPORT // Enable SD Card Support in Hardware Console
-					//#define SDSLOW // Use slower SD transfer mode (not normally needed - uncomment if you're getting volume init error)
-					//#define SD_CHECK_AND_RETRY // Use CRC checks and retries on the SD communication
-					//#define ENCODER_PULSES_PER_STEP 1 // Increase if you have a high resolution encoder
-					//#define ENCODER_STEPS_PER_MENU_ITEM 5 // Set according to ENCODER_PULSES_PER_STEP or your liking
-					//#define ULTIMAKERCONTROLLER //as available from the Ultimaker online store.
-					//#define ULTIPANEL //the UltiPanel as on Thingiverse
-					//#define LCD_FEEDBACK_FREQUENCY_HZ 1000 // this is the tone frequency the buzzer plays when on UI feedback. ie Screen Click
-					//#define LCD_FEEDBACK_FREQUENCY_DURATION_MS 100 // the duration the buzzer plays the UI feedback sound. ie Screen Click
-					// The MaKr3d Makr-Panel with graphic controller and SD support
-					// http://reprap.org/wiki/MaKr3d_MaKrPanel
-					//#define MAKRPANEL
-					// The RepRapDiscount Smart Controller (white PCB)
-					// http://reprap.org/wiki/RepRapDiscount_Smart_Controller
-					//#define REPRAP_DISCOUNT_SMART_CONTROLLER
-					// The GADGETS3D G3D LCD/SD Controller (blue PCB)
-					// http://reprap.org/wiki/RAMPS_1.3/1.4_GADGETS3D_Shield_with_Panel
-					//#define G3D_PANEL
-					// The RepRapDiscount FULL GRAPHIC Smart Controller (quadratic white PCB)
-					// http://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
-					//
-					// ==> REMEMBER TO INSTALL U8glib to your ARDUINO library folder: http://code.google.com/p/u8glib/wiki/u8glib
-					//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
-					// The RepRapWorld REPRAPWORLD_KEYPAD v1.1
-					// http://reprapworld.com/?products_details&products_id=202&cPath=1591_1626
-					//#define REPRAPWORLD_KEYPAD
-					//#define REPRAPWORLD_KEYPAD_MOVE_STEP 10.0 // how much should be moved when a key is pressed, eg 10.0 means 10mm per click
-					// The Elefu RA Board Control Panel
-					// http://www.elefu.com/index.php?route=product/product&product_id=53
-					// REMEMBER TO INSTALL LiquidCrystal_I2C.h in your ARUDINO library folder: https://github.com/kiyoshigawa/LiquidCrystal_I2C
-					//#define RA_CONTROL_PANEL
-					//automatic expansion
-					#if defined (MAKRPANEL)
-					#define DOGLCD
-					#define SDSUPPORT
-					#define ULTIPANEL
-					#define NEWPANEL
-					#define DEFAULT_LCD_CONTRAST 17
-					#endif
-					#if defined (REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-					#define DOGLCD
-					#define U8GLIB_ST7920
-					#define REPRAP_DISCOUNT_SMART_CONTROLLER
-					#endif
-					#if defined(ULTIMAKERCONTROLLER) || defined(REPRAP_DISCOUNT_SMART_CONTROLLER) || defined(G3D_PANEL)
-					#define ULTIPANEL
-					#define NEWPANEL
-					#endif
-					#if defined(REPRAPWORLD_KEYPAD)
-					#define NEWPANEL
-					#define ULTIPANEL
-					#endif
-					#if defined(RA_CONTROL_PANEL)
-					#define ULTIPANEL
-					#define NEWPANEL
-					#define LCD_I2C_TYPE_PCA8574
-					#define LCD_I2C_ADDRESS 0x27 // I2C Address of the port expander
-					#endif
-					//I2C PANELS
-					//#define LCD_I2C_SAINSMART_YWROBOT
-					#ifdef LCD_I2C_SAINSMART_YWROBOT
-					// This uses the LiquidCrystal_I2C library ( https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home )
-					// Make sure it is placed in the Arduino libraries directory.
-					#define LCD_I2C_TYPE_PCF8575
-					#define LCD_I2C_ADDRESS 0x27 // I2C Address of the port expander
-					#define NEWPANEL
-					#define ULTIPANEL
-					#endif
-					// PANELOLU2 LCD with status LEDs, separate encoder and click inputs
-					//#define LCD_I2C_PANELOLU2
-					#ifdef LCD_I2C_PANELOLU2
-					// This uses the LiquidTWI2 library v1.2.3 or later ( https://github.com/lincomatic/LiquidTWI2 )
-					// Make sure the LiquidTWI2 directory is placed in the Arduino or Sketchbook libraries subdirectory.
-					// (v1.2.3 no longer requires you to define PANELOLU in the LiquidTWI2.h library header file)
-					// Note: The PANELOLU2 encoder click input can either be directly connected to a pin
-					// (if BTN_ENC defined to != -1) or read through I2C (when BTN_ENC == -1).
-					#define LCD_I2C_TYPE_MCP23017
-					#define LCD_I2C_ADDRESS 0x20 // I2C Address of the port expander
-					#define LCD_USE_I2C_BUZZER //comment out to disable buzzer on LCD
-					#define NEWPANEL
-					#define ULTIPANEL
-					#ifndef ENCODER_PULSES_PER_STEP
-					#define ENCODER_PULSES_PER_STEP 4
-					#endif
-					#ifndef ENCODER_STEPS_PER_MENU_ITEM
-					#define ENCODER_STEPS_PER_MENU_ITEM 1
-					#endif
-					#ifdef LCD_USE_I2C_BUZZER
-					#define LCD_FEEDBACK_FREQUENCY_HZ 1000
-					#define LCD_FEEDBACK_FREQUENCY_DURATION_MS 100
-					#endif
-					#endif
-					// Panucatt VIKI LCD with status LEDs, integrated click & L/R/U/P buttons, separate encoder inputs
-					//#define LCD_I2C_VIKI
-					#ifdef LCD_I2C_VIKI
-					// This uses the LiquidTWI2 library v1.2.3 or later ( https://github.com/lincomatic/LiquidTWI2 )
-					// Make sure the LiquidTWI2 directory is placed in the Arduino or Sketchbook libraries subdirectory.
-					// Note: The pause/stop/resume LCD button pin should be connected to the Arduino
-					// BTN_ENC pin (or set BTN_ENC to -1 if not used)
-					#define LCD_I2C_TYPE_MCP23017
-					#define LCD_I2C_ADDRESS 0x20 // I2C Address of the port expander
-					#define LCD_USE_I2C_BUZZER //comment out to disable buzzer on LCD (requires LiquidTWI2 v1.2.3 or later)
-					#define NEWPANEL
-					#define ULTIPANEL
-					#endif
-					// Shift register panels
-					// ---------------------
-					// 2 wire Non-latching LCD SR from:
-					// https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/schematics#!shiftregister-connection
-					//#define SAV_3DLCD
-					#ifdef SAV_3DLCD
-					#define SR_LCD_2W_NL // Non latching 2 wire shiftregister
-					#define NEWPANEL
-					#define ULTIPANEL
-					#endif
-					#ifdef ULTIPANEL
-					// #define NEWPANEL //enable this if you have a click-encoder panel
-					#define SDSUPPORT
-					#define ULTRA_LCD
-					#ifdef DOGLCD // Change number of lines to match the DOG graphic display
-					#define LCD_WIDTH 20
-					#define LCD_HEIGHT 5
-					#else
-					#define LCD_WIDTH 20
-					#define LCD_HEIGHT 4
-					#endif
-					#else //no panel but just LCD
-					#ifdef ULTRA_LCD
-					#ifdef DOGLCD // Change number of lines to match the 128x64 graphics display
-					#define LCD_WIDTH 20
-					#define LCD_HEIGHT 5
-					#else
-					#define LCD_WIDTH 16
-					#define LCD_HEIGHT 2
-					#endif
-					#endif
-					#endif
-					// default LCD contrast for dogm-like LCD displays
-					#ifdef DOGLCD
-					# ifndef DEFAULT_LCD_CONTRAST
-					# define DEFAULT_LCD_CONTRAST 32
-					# endif
-					#endif
-					// Increase the FAN pwm frequency. Removes the PWM noise but increases heating in the FET/Arduino
-					//#define FAST_PWM_FAN
-					// Temperature status LEDs that display the hotend and bet temperature.
-					// If all hotends and bed temperature and temperature setpoint are < 54C then the BLUE led is on.
-					// Otherwise the RED led is on. There is 1C hysteresis.
-					//#define TEMP_STAT_LEDS
-					// Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
-					// which is not ass annoying as with the hardware PWM. On the other hand, if this frequency
-					// is too low, you should also increment SOFT_PWM_SCALE.
-					//#define FAN_SOFT_PWM
-					// Incrementing this by 1 will double the software PWM frequency,
-					// affecting heaters, and the fan if FAN_SOFT_PWM is enabled.
-					// However, control resolution will be halved for each increment;
-					// at zero value, there are 128 effective control positions.
-					#define SOFT_PWM_SCALE 0
-					// M240 Triggers a camera by emulating a Canon RC-1 Remote
-					// Data from: http://www.doc-diy.net/photo/rc-1_hacked/
-					// #define PHOTOGRAPH_PIN 23
-					// SF send wrong arc g-codes when using Arc Point as fillet procedure
-					//#define SF_ARC_FIX
-					// Support for the BariCUDA Paste Extruder.
-					//#define BARICUDA
-					//define BlinkM/CyzRgb Support
-					//#define BLINKM
-					/*********************************************************************\
-					* R/C SERVO support
-					* Sponsored by TrinityLabs, Reworked by codexmas
-					**********************************************************************/
-					// Number of servos
-					//
-					// If you select a configuration below, this will receive a default value and does not need to be set manually
-					// set it manually if you have more servos than extruders and wish to manually control some
-					// leaving it undefined or defining as 0 will disable the servo subsystem
-					// If unsure, leave commented / disabled
-					//
-					//#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
-					// Servo Endstops
-					//
-					// This allows for servo actuated endstops, primary usage is for the Z Axis to eliminate calibration or bed height changes.
-					// Use M206 command to correct for switch height offset to actual nozzle height. Store that setting with M500.
-					//
-					//#define SERVO_ENDSTOPS {-1, -1, 0} // Servo index for X, Y, Z. Disable with -1
-					//#define SERVO_ENDSTOP_ANGLES {0,0, 0,0, 70,0} // X,Y,Z Axis Extend and Retract angles
-					/**********************************************************************\
-					* Support for a filament diameter sensor
-					* Also allows adjustment of diameter at print time (vs at slicing)
-					* Single extruder only at this point (extruder 0)
-					*
-					* Motherboards
-					* 34 - RAMPS1.4 - uses Analog input 5 on the AUX2 connector
-					* 81 - Printrboard - Uses Analog input 2 on the Exp1 connector (version B,C,D,E)
-					* 301 - Rambo - uses Analog input 3
-					* Note may require analog pins to be defined for different motherboards
-					**********************************************************************/
-					// Uncomment below to enable
-					//#define FILAMENT_SENSOR
-					#define FILAMENT_SENSOR_EXTRUDER_NUM	0 //The number of the extruder that has the filament sensor (0,1,2)
-					#define MEASUREMENT_DELAY_CM	14 //measurement delay in cm. This is the distance from filament sensor to middle of barrel
-					#define DEFAULT_NOMINAL_FILAMENT_DIA 3.0 //Enter the diameter (in mm) of the filament generally used (3.0 mm or 1.75 mm) - this is then used in the slicer software. Used for sensor reading validation
-					#define MEASURED_UPPER_LIMIT 3.30 //upper limit factor used for sensor reading validation in mm
-					#define MEASURED_LOWER_LIMIT 1.90 //lower limit factor for sensor reading validation in mm
-					#define MAX_MEASUREMENT_DELAY	20 //delay buffer size in bytes (1 byte = 1cm)- limits maximum measurement delay allowable (must be larger than MEASUREMENT_DELAY_CM and lower number saves RAM)
-					//defines used in the code
-					#define DEFAULT_MEASURED_FILAMENT_DIA DEFAULT_NOMINAL_FILAMENT_DIA //set measured to nominal initially
-					//When using an LCD, uncomment the line below to display the Filament sensor data on the last line instead of status. Status will appear for 5 sec.
-					//#define FILAMENT_LCD_DISPLAY
-					#include "Configuration_adv.h"
-					#include "thermistortables.h"
-					#endif //__CONFIGURATION_H
+			<div class="panel panel-default col-md-5">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						1 - Paste your Marlin configuration.h here
+					</h3>
+				</div>
+				<div class="panel-body">
+					<textarea name="marlinconfig">
+						#ifndef CONFIGURATION_H
+						#define CONFIGURATION_H
+						#include "boards.h"
+						// This configuration file contains the basic settings.
+						// Advanced settings can be found in Configuration_adv.h
+						// BASIC SETTINGS: select your board type, temperature sensor type, axis scaling, and endstop configuration
+						//===========================================================================
+						//============================= DELTA Printer ===============================
+						//===========================================================================
+						// For a Delta printer replace the configuration files with the files in the
+						// example_configurations/delta directory.
+						//
+						//===========================================================================
+						//============================= SCARA Printer ===============================
+						//===========================================================================
+						// For a Delta printer replace the configuration files with the files in the
+						// example_configurations/SCARA directory.
+						//
+						// User-specified version info of this build to display in [Pronterface, etc] terminal window during
+						// startup. Implementation of an idea by Prof Braino to inform user that any changes made to this
+						// build by the user have been successfully uploaded into firmware.
+						#define STRING_VERSION_CONFIG_H __DATE__ " " __TIME__ // build date and time
+						#define STRING_CONFIG_H_AUTHOR "(none, default config)" // Who made the changes.
+						// SERIAL_PORT selects which serial port should be used for communication with the host.
+						// This allows the connection of wireless adapters (for instance) to non-default port pins.
+						// Serial port 0 is still used by the Arduino bootloader regardless of this setting.
+						#define SERIAL_PORT 0
+						// This determines the communication speed of the printer
+						#define BAUDRATE 250000
+						// This enables the serial port associated to the Bluetooth interface
+						//#define BTENABLED // Enable BT interface on AT90USB devices
+						// The following define selects which electronics board you have.
+						// Please choose the name from boards.h that matches your setup
+						#ifndef MOTHERBOARD
+						#define MOTHERBOARD BOARD_ULTIMAKER
+						#endif
+						// Define this to set a custom name for your generic Mendel,
+						// #define CUSTOM_MENDEL_NAME "This Mendel"
+						// Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
+						// You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
+						// #define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
+						// This defines the number of extruders
+						#define EXTRUDERS 1
+						//// The following define selects which power supply you have. Please choose the one that matches your setup
+						// 1 = ATX
+						// 2 = X-Box 360 203Watts (the blue wire connected to PS_ON and the red wire to VCC)
+						#define POWER_SUPPLY 1
+						// Define this to have the electronics keep the power supply off on startup. If you don't know what this is leave it.
+						// #define PS_DEFAULT_OFF
+						//===========================================================================
+						//=============================Thermal Settings ============================
+						//===========================================================================
+						//
+						//--NORMAL IS 4.7kohm PULLUP!-- 1kohm pullup can be used on hotend sensor, using correct resistor and table
+						//
+						//// Temperature sensor settings:
+						// -2 is thermocouple with MAX6675 (only for sensor 0)
+						// -1 is thermocouple with AD595
+						// 0 is not used
+						// 1 is 100k thermistor - best choice for EPCOS 100k (4.7k pullup)
+						// 2 is 200k thermistor - ATC Semitec 204GT-2 (4.7k pullup)
+						// 3 is Mendel-parts thermistor (4.7k pullup)
+						// 4 is 10k thermistor !! do not use it for a hotend. It gives bad resolution at high temp. !!
+						// 5 is 100K thermistor - ATC Semitec 104GT-2 (Used in ParCan & J-Head) (4.7k pullup)
+						// 6 is 100k EPCOS - Not as accurate as table 1 (created using a fluke thermocouple) (4.7k pullup)
+						// 7 is 100k Honeywell thermistor 135-104LAG-J01 (4.7k pullup)
+						// 71 is 100k Honeywell thermistor 135-104LAF-J01 (4.7k pullup)
+						// 8 is 100k 0603 SMD Vishay NTCS0603E3104FXT (4.7k pullup)
+						// 9 is 100k GE Sensing AL03006-58.2K-97-G1 (4.7k pullup)
+						// 10 is 100k RS thermistor 198-961 (4.7k pullup)
+						// 11 is 100k beta 3950 1% thermistor (4.7k pullup)
+						// 12 is 100k 0603 SMD Vishay NTCS0603E3104FXT (4.7k pullup) (calibrated for Makibox hot bed)
+						// 13 is 100k Hisens 3950 1% up to 300°C for hotend "Simple ONE " & "Hotend "All In ONE"
+						// 20 is the PT100 circuit found in the Ultimainboard V2.x
+						// 60 is 100k Maker's Tool Works Kapton Bed Thermistor beta=3950
+						//
+						// 1k ohm pullup tables - This is not normal, you would have to have changed out your 4.7k for 1k
+						// (but gives greater accuracy and more stable PID)
+						// 51 is 100k thermistor - EPCOS (1k pullup)
+						// 52 is 200k thermistor - ATC Semitec 204GT-2 (1k pullup)
+						// 55 is 100k thermistor - ATC Semitec 104GT-2 (Used in ParCan & J-Head) (1k pullup)
+						//
+						// 1047 is Pt1000 with 4k7 pullup
+						// 1010 is Pt1000 with 1k pullup (non standard)
+						// 147 is Pt100 with 4k7 pullup
+						// 110 is Pt100 with 1k pullup (non standard)
+						#define TEMP_SENSOR_0 -1
+						#define TEMP_SENSOR_1 -1
+						#define TEMP_SENSOR_2 0
+						#define TEMP_SENSOR_BED 0
+						// This makes temp sensor 1 a redundant sensor for sensor 0. If the temperatures difference between these sensors is to high the print will be aborted.
+						//#define TEMP_SENSOR_1_AS_REDUNDANT
+						#define MAX_REDUNDANT_TEMP_SENSOR_DIFF 10
+						// Actual temperature must be close to target for this long before M109 returns success
+						#define TEMP_RESIDENCY_TIME 10 // (seconds)
+						#define TEMP_HYSTERESIS 3 // (degC) range of +/- temperatures considered "close" to the target one
+						#define TEMP_WINDOW 1 // (degC) Window around target to start the residency timer x degC early.
+						// The minimal temperature defines the temperature below which the heater will not be enabled It is used
+						// to check that the wiring to the thermistor is not broken.
+						// Otherwise this would lead to the heater being powered on all the time.
+						#define HEATER_0_MINTEMP 5
+						#define HEATER_1_MINTEMP 5
+						#define HEATER_2_MINTEMP 5
+						#define BED_MINTEMP 5
+						// When temperature exceeds max temp, your heater will be switched off.
+						// This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
+						// You should use MINTEMP for thermistor short/failure protection.
+						#define HEATER_0_MAXTEMP 275
+						#define HEATER_1_MAXTEMP 275
+						#define HEATER_2_MAXTEMP 275
+						#define BED_MAXTEMP 150
+						// If your bed has low resistance e.g. .6 ohm and throws the fuse you can duty cycle it to reduce the
+						// average current. The value should be an integer and the heat bed will be turned on for 1 interval of
+						// HEATER_BED_DUTY_CYCLE_DIVIDER intervals.
+						//#define HEATER_BED_DUTY_CYCLE_DIVIDER 4
+						// If you want the M105 heater power reported in watts, define the BED_WATTS, and (shared for all extruders) EXTRUDER_WATTS
+						//#define EXTRUDER_WATTS (12.0*12.0/6.7) // P=I^2/R
+						//#define BED_WATTS (12.0*12.0/1.1) // P=I^2/R
+						// PID settings:
+						// Comment the following line to disable PID and enable bang-bang.
+						#define PIDTEMP
+						#define BANG_MAX 255 // limits current to nozzle while in bang-bang mode; 255=full current
+						#define PID_MAX BANG_MAX // limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
+						#ifdef PIDTEMP
+						//#define PID_DEBUG // Sends debug data to the serial port.
+						//#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
+						#define PID_FUNCTIONAL_RANGE 10 // If the temperature difference between the target temperature and the actual temperature
+						// is more then PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
+						#define PID_INTEGRAL_DRIVE_MAX PID_MAX //limit for the integral term
+						#define K1 0.95 //smoothing factor within the PID
+						#define PID_dT ((OVERSAMPLENR * 10.0)/(F_CPU / 64.0 / 256.0)) //sampling period of the temperature routine
+						// If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
+						// Ultimaker
+						#define DEFAULT_Kp 22.2
+						#define DEFAULT_Ki 1.08
+						#define DEFAULT_Kd 114
+						// MakerGear
+						// #define DEFAULT_Kp 7.0
+						// #define DEFAULT_Ki 0.1
+						// #define DEFAULT_Kd 12
+						// Mendel Parts V9 on 12V
+						// #define DEFAULT_Kp 63.0
+						// #define DEFAULT_Ki 2.25
+						// #define DEFAULT_Kd 440
+						#endif // PIDTEMP
+						// Bed Temperature Control
+						// Select PID or bang-bang with PIDTEMPBED. If bang-bang, BED_LIMIT_SWITCHING will enable hysteresis
+						//
+						// Uncomment this to enable PID on the bed. It uses the same frequency PWM as the extruder.
+						// If your PID_dT above is the default, and correct for your hardware/configuration, that means 7.689Hz,
+						// which is fine for driving a square wave into a resistive load and does not significantly impact you FET heating.
+						// This also works fine on a Fotek SSR-10DA Solid State Relay into a 250W heater.
+						// If your configuration is significantly different than this and you don't understand the issues involved, you probably
+						// shouldn't use bed PID until someone else verifies your hardware works.
+						// If this is enabled, find your own PID constants below.
+						//#define PIDTEMPBED
+						//
+						//#define BED_LIMIT_SWITCHING
+						// This sets the max power delivered to the bed, and replaces the HEATER_BED_DUTY_CYCLE_DIVIDER option.
+						// all forms of bed control obey this (PID, bang-bang, bang-bang with hysteresis)
+						// setting this to anything other than 255 enables a form of PWM to the bed just like HEATER_BED_DUTY_CYCLE_DIVIDER did,
+						// so you shouldn't use it unless you are OK with PWM on your bed. (see the comment on enabling PIDTEMPBED)
+						#define MAX_BED_POWER 255 // limits duty cycle to bed; 255=full current
+						#ifdef PIDTEMPBED
+						//120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
+						//from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
+						#define DEFAULT_bedKp 10.00
+						#define DEFAULT_bedKi .023
+						#define DEFAULT_bedKd 305.4
+						//120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
+						//from pidautotune
+						// #define DEFAULT_bedKp 97.1
+						// #define DEFAULT_bedKi 1.41
+						// #define DEFAULT_bedKd 1675.16
+						// FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
+						#endif // PIDTEMPBED
+						//this prevents dangerous Extruder moves, i.e. if the temperature is under the limit
+						//can be software-disabled for whatever purposes by
+						#define PREVENT_DANGEROUS_EXTRUDE
+						//if PREVENT_DANGEROUS_EXTRUDE is on, you can still disable (uncomment) very long bits of extrusion separately.
+						#define PREVENT_LENGTHY_EXTRUDE
+						#define EXTRUDE_MINTEMP 170
+						#define EXTRUDE_MAXLENGTH (X_MAX_LENGTH+Y_MAX_LENGTH) //prevent extrusion of very large distances.
+						/*================== Thermal Runaway Protection ==============================
+						This is a feature to protect your printer from burn up in flames if it has
+						a thermistor coming off place (this happened to a friend of mine recently and
+						motivated me writing this feature).
+						The issue: If a thermistor come off, it will read a lower temperature than actual.
+						The system will turn the heater on forever, burning up the filament and anything
+						else around.
+						After the temperature reaches the target for the first time, this feature will
+						start measuring for how long the current temperature stays below the target
+						minus _HYSTERESIS (set_temperature - THERMAL_RUNAWAY_PROTECTION_HYSTERESIS).
+						If it stays longer than _PERIOD, it means the thermistor temperature
+						cannot catch up with the target, so something *may be* wrong. Then, to be on the
+						safe side, the system will he halt.
+						Bear in mind the count down will just start AFTER the first time the
+						thermistor temperature is over the target, so you will have no problem if
+						your extruder heater takes 2 minutes to hit the target on heating.
+						*/
+						// If you want to enable this feature for all your extruder heaters,
+						// uncomment the 2 defines below:
+						// Parameters for all extruder heaters
+						//#define THERMAL_RUNAWAY_PROTECTION_PERIOD 40 //in seconds
+						//#define THERMAL_RUNAWAY_PROTECTION_HYSTERESIS 4 // in degree Celsius
+						// If you want to enable this feature for your bed heater,
+						// uncomment the 2 defines below:
+						// Parameters for the bed heater
+						//#define THERMAL_RUNAWAY_PROTECTION_BED_PERIOD 20 //in seconds
+						//#define THERMAL_RUNAWAY_PROTECTION_BED_HYSTERESIS 2 // in degree Celsius
+						//===========================================================================
+						//===========================================================================
+						//=============================Mechanical Settings===========================
+						//===========================================================================
+						// Uncomment the following line to enable CoreXY kinematics
+						// #define COREXY
+						// coarse Endstop Settings
+						#define ENDSTOPPULLUPS // Comment this out (using // at the start of the line) to disable the endstop pullup resistors
+						#ifndef ENDSTOPPULLUPS
+						// fine endstop settings: Individual pullups. will be ignored if ENDSTOPPULLUPS is defined
+						// #define ENDSTOPPULLUP_XMAX
+						// #define ENDSTOPPULLUP_YMAX
+						// #define ENDSTOPPULLUP_ZMAX
+						// #define ENDSTOPPULLUP_XMIN
+						// #define ENDSTOPPULLUP_YMIN
+						// #define ENDSTOPPULLUP_ZMIN
+						#endif
+						#ifdef ENDSTOPPULLUPS
+						#define ENDSTOPPULLUP_XMAX
+						#define ENDSTOPPULLUP_YMAX
+						#define ENDSTOPPULLUP_ZMAX
+						#define ENDSTOPPULLUP_XMIN
+						#define ENDSTOPPULLUP_YMIN
+						#define ENDSTOPPULLUP_ZMIN
+						#endif
+						// The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
+						const bool X_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
+						const bool Y_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
+						const bool Z_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
+						const bool X_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
+						const bool Y_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
+						const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
+						//#define DISABLE_MAX_ENDSTOPS
+						//#define DISABLE_MIN_ENDSTOPS
+						// Disable max endstops for compatibility with endstop checking routine
+						#if defined(COREXY) && !defined(DISABLE_MAX_ENDSTOPS)
+						#define DISABLE_MAX_ENDSTOPS
+						#endif
+						// For Inverting Stepper Enable Pins (Active Low) use 0, Non Inverting (Active High) use 1
+						#define X_ENABLE_ON 0
+						#define Y_ENABLE_ON 0
+						#define Z_ENABLE_ON 0
+						#define E_ENABLE_ON 0 // For all extruders
+						// Disables axis when it's not being used.
+						#define DISABLE_X false
+						#define DISABLE_Y false
+						#define DISABLE_Z false
+						#define DISABLE_E false // For all extruders
+						#define DISABLE_INACTIVE_EXTRUDER true //disable only inactive extruders and keep active extruder enabled
+						#define INVERT_X_DIR true // for Mendel set to false, for Orca set to true
+						#define INVERT_Y_DIR false // for Mendel set to true, for Orca set to false
+						#define INVERT_Z_DIR true // for Mendel set to false, for Orca set to true
+						#define INVERT_E0_DIR false // for direct drive extruder v9 set to true, for geared extruder set to false
+						#define INVERT_E1_DIR false // for direct drive extruder v9 set to true, for geared extruder set to false
+						#define INVERT_E2_DIR false // for direct drive extruder v9 set to true, for geared extruder set to false
+						// ENDSTOP SETTINGS:
+						// Sets direction of endstops when homing; 1=MAX, -1=MIN
+						#define X_HOME_DIR -1
+						#define Y_HOME_DIR -1
+						#define Z_HOME_DIR -1
+						#define min_software_endstops true // If true, axis won't move to coordinates less than HOME_POS.
+						#define max_software_endstops true // If true, axis won't move to coordinates greater than the defined lengths below.
+						// Travel limits after homing
+						#define X_MAX_POS 205
+						#define X_MIN_POS 0
+						#define Y_MAX_POS 205
+						#define Y_MIN_POS 0
+						#define Z_MAX_POS 200
+						#define Z_MIN_POS 0
+						#define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
+						#define Y_MAX_LENGTH (Y_MAX_POS - Y_MIN_POS)
+						#define Z_MAX_LENGTH (Z_MAX_POS - Z_MIN_POS)
+						//============================= Bed Auto Leveling ===========================
+						//#define ENABLE_AUTO_BED_LEVELING // Delete the comment to enable (remove // at the start of the line)
+						#define Z_PROBE_REPEATABILITY_TEST // If not commented out, Z-Probe Repeatability test will be included if Auto Bed Leveling is Enabled.
+						#ifdef ENABLE_AUTO_BED_LEVELING
+						// There are 2 different ways to pick the X and Y locations to probe:
+						// - "grid" mode
+						// Probe every point in a rectangular grid
+						// You must specify the rectangle, and the density of sample points
+						// This mode is preferred because there are more measurements.
+						// It used to be called ACCURATE_BED_LEVELING but "grid" is more descriptive
+						// - "3-point" mode
+						// Probe 3 arbitrary points on the bed (that aren't colinear)
+						// You must specify the X & Y coordinates of all 3 points
+						#define AUTO_BED_LEVELING_GRID
+						// with AUTO_BED_LEVELING_GRID, the bed is sampled in a
+						// AUTO_BED_LEVELING_GRID_POINTSxAUTO_BED_LEVELING_GRID_POINTS grid
+						// and least squares solution is calculated
+						// Note: this feature occupies 10'206 byte
+						#ifdef AUTO_BED_LEVELING_GRID
+						// set the rectangle in which to probe
+						#define LEFT_PROBE_BED_POSITION 15
+						#define RIGHT_PROBE_BED_POSITION 170
+						#define BACK_PROBE_BED_POSITION 180
+						#define FRONT_PROBE_BED_POSITION 20
+						// set the number of grid points per dimension
+						// I wouldn't see a reason to go above 3 (=9 probing points on the bed)
+						#define AUTO_BED_LEVELING_GRID_POINTS 2
+						#else // not AUTO_BED_LEVELING_GRID
+						// with no grid, just probe 3 arbitrary points. A simple cross-product
+						// is used to esimate the plane of the print bed
+						#define ABL_PROBE_PT_1_X 15
+						#define ABL_PROBE_PT_1_Y 180
+						#define ABL_PROBE_PT_2_X 15
+						#define ABL_PROBE_PT_2_Y 20
+						#define ABL_PROBE_PT_3_X 170
+						#define ABL_PROBE_PT_3_Y 20
+						#endif // AUTO_BED_LEVELING_GRID
+						// these are the offsets to the probe relative to the extruder tip (Hotend - Probe)
+						#define X_PROBE_OFFSET_FROM_EXTRUDER -25
+						#define Y_PROBE_OFFSET_FROM_EXTRUDER -29
+						#define Z_PROBE_OFFSET_FROM_EXTRUDER -12.35
+						#define Z_RAISE_BEFORE_HOMING 4 // (in mm) Raise Z before homing (G28) for Probe Clearance.
+						// Be sure you have this distance over your Z_MAX_POS in case
+						#define XY_TRAVEL_SPEED 8000 // X and Y axis travel speed between probes, in mm/min
+						#define Z_RAISE_BEFORE_PROBING 15 //How much the extruder will be raised before traveling to the first probing point.
+						#define Z_RAISE_BETWEEN_PROBINGS 5 //How much the extruder will be raised when traveling from between next probing points
+						//#define Z_PROBE_SLED // turn on if you have a z-probe mounted on a sled like those designed by Charles Bell
+						//#define SLED_DOCKING_OFFSET 5 // the extra distance the X axis must travel to pickup the sled. 0 should be fine but you can push it further if you'd like.
+						//If defined, the Probe servo will be turned on only during movement and then turned off to avoid jerk
+						//The value is the delay to turn the servo off after powered on - depends on the servo speed; 300ms is good value, but you can try lower it.
+						// You MUST HAVE the SERVO_ENDSTOPS defined to use here a value higher than zero otherwise your code will not compile.
+						// #define PROBE_SERVO_DEACTIVATION_DELAY 300
+						//If you have enabled the Bed Auto Leveling and are using the same Z Probe for Z Homing,
+						//it is highly recommended you let this Z_SAFE_HOMING enabled!!!
+						#define Z_SAFE_HOMING // This feature is meant to avoid Z homing with probe outside the bed area.
+						// When defined, it will:
+						// - Allow Z homing only after X and Y homing AND stepper drivers still enabled
+						// - If stepper drivers timeout, it will need X and Y homing again before Z homing
+						// - Position the probe in a defined XY point before Z Homing when homing all axis (G28)
+						// - Block Z homing only when the probe is outside bed area.
+						#ifdef Z_SAFE_HOMING
+						#define Z_SAFE_HOMING_X_POINT (X_MAX_LENGTH/2) // X point for Z homing when homing all axis (G28)
+						#define Z_SAFE_HOMING_Y_POINT (Y_MAX_LENGTH/2) // Y point for Z homing when homing all axis (G28)
+						#endif
+						#ifdef AUTO_BED_LEVELING_GRID // Check if Probe_Offset * Grid Points is greater than Probing Range
+						#if X_PROBE_OFFSET_FROM_EXTRUDER < 0
+						#if (-(X_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (RIGHT_PROBE_BED_POSITION - LEFT_PROBE_BED_POSITION))
+						#error "The X axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
+						#endif
+						#else
+						#if ((X_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (RIGHT_PROBE_BED_POSITION - LEFT_PROBE_BED_POSITION))
+						#error "The X axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
+						#endif
+						#endif
+						#if Y_PROBE_OFFSET_FROM_EXTRUDER < 0
+						#if (-(Y_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (BACK_PROBE_BED_POSITION - FRONT_PROBE_BED_POSITION))
+						#error "The Y axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
+						#endif
+						#else
+						#if ((Y_PROBE_OFFSET_FROM_EXTRUDER * AUTO_BED_LEVELING_GRID_POINTS) >= (BACK_PROBE_BED_POSITION - FRONT_PROBE_BED_POSITION))
+						#error "The Y axis probing range is not enough to fit all the points defined in AUTO_BED_LEVELING_GRID_POINTS"
+						#endif
+						#endif
+						#endif
+						#endif // ENABLE_AUTO_BED_LEVELING
+						// The position of the homing switches
+						//#define MANUAL_HOME_POSITIONS // If defined, MANUAL_*_HOME_POS below will be used
+						//#define BED_CENTER_AT_0_0 // If defined, the center of the bed is at (X=0, Y=0)
+						//Manual homing switch locations:
+						// For deltabots this means top and center of the Cartesian print volume.
+						#define MANUAL_X_HOME_POS 0
+						#define MANUAL_Y_HOME_POS 0
+						#define MANUAL_Z_HOME_POS 0
+						//#define MANUAL_Z_HOME_POS 402 // For delta: Distance between nozzle and print surface after homing.
+						//// MOVEMENT SETTINGS
+						#define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
+						#define HOMING_FEEDRATE {50*60, 50*60, 4*60, 0} // set the homing speeds (mm/min)
+						// default settings
+						#define DEFAULT_AXIS_STEPS_PER_UNIT {78.7402,78.7402,200.0*8/3,760*1.1} // default steps per unit for Ultimaker
+						#define DEFAULT_MAX_FEEDRATE {500, 500, 5, 25} // (mm/sec)
+						#define DEFAULT_MAX_ACCELERATION {9000,9000,100,10000} // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
+						#define DEFAULT_ACCELERATION 3000 // X, Y, Z and E max acceleration in mm/s^2 for printing moves
+						#define DEFAULT_RETRACT_ACCELERATION 3000 // X, Y, Z and E max acceleration in mm/s^2 for retracts
+						// Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
+						// The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
+						// For the other hotends it is their distance from the extruder 0 hotend.
+						// #define EXTRUDER_OFFSET_X {0.0, 20.00} // (in mm) for each extruder, offset of the hotend on the X axis
+						// #define EXTRUDER_OFFSET_Y {0.0, 5.00} // (in mm) for each extruder, offset of the hotend on the Y axis
+						// The speed change that does not require acceleration (i.e. the software might assume it can be done instantaneously)
+						#define DEFAULT_XYJERK 20.0 // (mm/sec)
+						#define DEFAULT_ZJERK 0.4 // (mm/sec)
+						#define DEFAULT_EJERK 5.0 // (mm/sec)
+						//===========================================================================
+						//=============================Additional Features===========================
+						//===========================================================================
+						// Custom M code points
+						#define CUSTOM_M_CODES
+						#ifdef CUSTOM_M_CODES
+						#define CUSTOM_M_CODE_SET_Z_PROBE_OFFSET 851
+						#define Z_PROBE_OFFSET_RANGE_MIN -15
+						#define Z_PROBE_OFFSET_RANGE_MAX -5
+						#endif
+						// EEPROM
+						// The microcontroller can store settings in the EEPROM, e.g. max velocity...
+						// M500 - stores parameters in EEPROM
+						// M501 - reads parameters from EEPROM (if you need reset them after you changed them temporarily).
+						// M502 - reverts to the default "factory settings". You still need to store them in EEPROM afterwards if you want to.
+						//define this to enable EEPROM support
+						//#define EEPROM_SETTINGS
+						//to disable EEPROM Serial responses and decrease program space by ~1700 byte: comment this out:
+						// please keep turned on if you can.
+						//#define EEPROM_CHITCHAT
+						// Preheat Constants
+						#define PLA_PREHEAT_HOTEND_TEMP 180
+						#define PLA_PREHEAT_HPB_TEMP 70
+						#define PLA_PREHEAT_FAN_SPEED 255 // Insert Value between 0 and 255
+						#define ABS_PREHEAT_HOTEND_TEMP 240
+						#define ABS_PREHEAT_HPB_TEMP 100
+						#define ABS_PREHEAT_FAN_SPEED 255 // Insert Value between 0 and 255
+						//LCD and SD support
+						//#define ULTRA_LCD //general LCD support, also 16x2
+						//#define DOGLCD // Support for SPI LCD 128x64 (Controller ST7565R graphic Display Family)
+						//#define SDSUPPORT // Enable SD Card Support in Hardware Console
+						//#define SDSLOW // Use slower SD transfer mode (not normally needed - uncomment if you're getting volume init error)
+						//#define SD_CHECK_AND_RETRY // Use CRC checks and retries on the SD communication
+						//#define ENCODER_PULSES_PER_STEP 1 // Increase if you have a high resolution encoder
+						//#define ENCODER_STEPS_PER_MENU_ITEM 5 // Set according to ENCODER_PULSES_PER_STEP or your liking
+						//#define ULTIMAKERCONTROLLER //as available from the Ultimaker online store.
+						//#define ULTIPANEL //the UltiPanel as on Thingiverse
+						//#define LCD_FEEDBACK_FREQUENCY_HZ 1000 // this is the tone frequency the buzzer plays when on UI feedback. ie Screen Click
+						//#define LCD_FEEDBACK_FREQUENCY_DURATION_MS 100 // the duration the buzzer plays the UI feedback sound. ie Screen Click
+						// The MaKr3d Makr-Panel with graphic controller and SD support
+						// http://reprap.org/wiki/MaKr3d_MaKrPanel
+						//#define MAKRPANEL
+						// The RepRapDiscount Smart Controller (white PCB)
+						// http://reprap.org/wiki/RepRapDiscount_Smart_Controller
+						//#define REPRAP_DISCOUNT_SMART_CONTROLLER
+						// The GADGETS3D G3D LCD/SD Controller (blue PCB)
+						// http://reprap.org/wiki/RAMPS_1.3/1.4_GADGETS3D_Shield_with_Panel
+						//#define G3D_PANEL
+						// The RepRapDiscount FULL GRAPHIC Smart Controller (quadratic white PCB)
+						// http://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
+						//
+						// ==> REMEMBER TO INSTALL U8glib to your ARDUINO library folder: http://code.google.com/p/u8glib/wiki/u8glib
+						//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+						// The RepRapWorld REPRAPWORLD_KEYPAD v1.1
+						// http://reprapworld.com/?products_details&products_id=202&cPath=1591_1626
+						//#define REPRAPWORLD_KEYPAD
+						//#define REPRAPWORLD_KEYPAD_MOVE_STEP 10.0 // how much should be moved when a key is pressed, eg 10.0 means 10mm per click
+						// The Elefu RA Board Control Panel
+						// http://www.elefu.com/index.php?route=product/product&product_id=53
+						// REMEMBER TO INSTALL LiquidCrystal_I2C.h in your ARUDINO library folder: https://github.com/kiyoshigawa/LiquidCrystal_I2C
+						//#define RA_CONTROL_PANEL
+						//automatic expansion
+						#if defined (MAKRPANEL)
+						#define DOGLCD
+						#define SDSUPPORT
+						#define ULTIPANEL
+						#define NEWPANEL
+						#define DEFAULT_LCD_CONTRAST 17
+						#endif
+						#if defined (REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
+						#define DOGLCD
+						#define U8GLIB_ST7920
+						#define REPRAP_DISCOUNT_SMART_CONTROLLER
+						#endif
+						#if defined(ULTIMAKERCONTROLLER) || defined(REPRAP_DISCOUNT_SMART_CONTROLLER) || defined(G3D_PANEL)
+						#define ULTIPANEL
+						#define NEWPANEL
+						#endif
+						#if defined(REPRAPWORLD_KEYPAD)
+						#define NEWPANEL
+						#define ULTIPANEL
+						#endif
+						#if defined(RA_CONTROL_PANEL)
+						#define ULTIPANEL
+						#define NEWPANEL
+						#define LCD_I2C_TYPE_PCA8574
+						#define LCD_I2C_ADDRESS 0x27 // I2C Address of the port expander
+						#endif
+						//I2C PANELS
+						//#define LCD_I2C_SAINSMART_YWROBOT
+						#ifdef LCD_I2C_SAINSMART_YWROBOT
+						// This uses the LiquidCrystal_I2C library ( https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home )
+						// Make sure it is placed in the Arduino libraries directory.
+						#define LCD_I2C_TYPE_PCF8575
+						#define LCD_I2C_ADDRESS 0x27 // I2C Address of the port expander
+						#define NEWPANEL
+						#define ULTIPANEL
+						#endif
+						// PANELOLU2 LCD with status LEDs, separate encoder and click inputs
+						//#define LCD_I2C_PANELOLU2
+						#ifdef LCD_I2C_PANELOLU2
+						// This uses the LiquidTWI2 library v1.2.3 or later ( https://github.com/lincomatic/LiquidTWI2 )
+						// Make sure the LiquidTWI2 directory is placed in the Arduino or Sketchbook libraries subdirectory.
+						// (v1.2.3 no longer requires you to define PANELOLU in the LiquidTWI2.h library header file)
+						// Note: The PANELOLU2 encoder click input can either be directly connected to a pin
+						// (if BTN_ENC defined to != -1) or read through I2C (when BTN_ENC == -1).
+						#define LCD_I2C_TYPE_MCP23017
+						#define LCD_I2C_ADDRESS 0x20 // I2C Address of the port expander
+						#define LCD_USE_I2C_BUZZER //comment out to disable buzzer on LCD
+						#define NEWPANEL
+						#define ULTIPANEL
+						#ifndef ENCODER_PULSES_PER_STEP
+						#define ENCODER_PULSES_PER_STEP 4
+						#endif
+						#ifndef ENCODER_STEPS_PER_MENU_ITEM
+						#define ENCODER_STEPS_PER_MENU_ITEM 1
+						#endif
+						#ifdef LCD_USE_I2C_BUZZER
+						#define LCD_FEEDBACK_FREQUENCY_HZ 1000
+						#define LCD_FEEDBACK_FREQUENCY_DURATION_MS 100
+						#endif
+						#endif
+						// Panucatt VIKI LCD with status LEDs, integrated click & L/R/U/P buttons, separate encoder inputs
+						//#define LCD_I2C_VIKI
+						#ifdef LCD_I2C_VIKI
+						// This uses the LiquidTWI2 library v1.2.3 or later ( https://github.com/lincomatic/LiquidTWI2 )
+						// Make sure the LiquidTWI2 directory is placed in the Arduino or Sketchbook libraries subdirectory.
+						// Note: The pause/stop/resume LCD button pin should be connected to the Arduino
+						// BTN_ENC pin (or set BTN_ENC to -1 if not used)
+						#define LCD_I2C_TYPE_MCP23017
+						#define LCD_I2C_ADDRESS 0x20 // I2C Address of the port expander
+						#define LCD_USE_I2C_BUZZER //comment out to disable buzzer on LCD (requires LiquidTWI2 v1.2.3 or later)
+						#define NEWPANEL
+						#define ULTIPANEL
+						#endif
+						// Shift register panels
+						// ---------------------
+						// 2 wire Non-latching LCD SR from:
+						// https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/schematics#!shiftregister-connection
+						//#define SAV_3DLCD
+						#ifdef SAV_3DLCD
+						#define SR_LCD_2W_NL // Non latching 2 wire shiftregister
+						#define NEWPANEL
+						#define ULTIPANEL
+						#endif
+						#ifdef ULTIPANEL
+						// #define NEWPANEL //enable this if you have a click-encoder panel
+						#define SDSUPPORT
+						#define ULTRA_LCD
+						#ifdef DOGLCD // Change number of lines to match the DOG graphic display
+						#define LCD_WIDTH 20
+						#define LCD_HEIGHT 5
+						#else
+						#define LCD_WIDTH 20
+						#define LCD_HEIGHT 4
+						#endif
+						#else //no panel but just LCD
+						#ifdef ULTRA_LCD
+						#ifdef DOGLCD // Change number of lines to match the 128x64 graphics display
+						#define LCD_WIDTH 20
+						#define LCD_HEIGHT 5
+						#else
+						#define LCD_WIDTH 16
+						#define LCD_HEIGHT 2
+						#endif
+						#endif
+						#endif
+						// default LCD contrast for dogm-like LCD displays
+						#ifdef DOGLCD
+						# ifndef DEFAULT_LCD_CONTRAST
+						# define DEFAULT_LCD_CONTRAST 32
+						# endif
+						#endif
+						// Increase the FAN pwm frequency. Removes the PWM noise but increases heating in the FET/Arduino
+						//#define FAST_PWM_FAN
+						// Temperature status LEDs that display the hotend and bet temperature.
+						// If all hotends and bed temperature and temperature setpoint are < 54C then the BLUE led is on.
+						// Otherwise the RED led is on. There is 1C hysteresis.
+						//#define TEMP_STAT_LEDS
+						// Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
+						// which is not ass annoying as with the hardware PWM. On the other hand, if this frequency
+						// is too low, you should also increment SOFT_PWM_SCALE.
+						//#define FAN_SOFT_PWM
+						// Incrementing this by 1 will double the software PWM frequency,
+						// affecting heaters, and the fan if FAN_SOFT_PWM is enabled.
+						// However, control resolution will be halved for each increment;
+						// at zero value, there are 128 effective control positions.
+						#define SOFT_PWM_SCALE 0
+						// M240 Triggers a camera by emulating a Canon RC-1 Remote
+						// Data from: http://www.doc-diy.net/photo/rc-1_hacked/
+						// #define PHOTOGRAPH_PIN 23
+						// SF send wrong arc g-codes when using Arc Point as fillet procedure
+						//#define SF_ARC_FIX
+						// Support for the BariCUDA Paste Extruder.
+						//#define BARICUDA
+						//define BlinkM/CyzRgb Support
+						//#define BLINKM
+						/*********************************************************************\
+						* R/C SERVO support
+						* Sponsored by TrinityLabs, Reworked by codexmas
+						**********************************************************************/
+						// Number of servos
+						//
+						// If you select a configuration below, this will receive a default value and does not need to be set manually
+						// set it manually if you have more servos than extruders and wish to manually control some
+						// leaving it undefined or defining as 0 will disable the servo subsystem
+						// If unsure, leave commented / disabled
+						//
+						//#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
+						// Servo Endstops
+						//
+						// This allows for servo actuated endstops, primary usage is for the Z Axis to eliminate calibration or bed height changes.
+						// Use M206 command to correct for switch height offset to actual nozzle height. Store that setting with M500.
+						//
+						//#define SERVO_ENDSTOPS {-1, -1, 0} // Servo index for X, Y, Z. Disable with -1
+						//#define SERVO_ENDSTOP_ANGLES {0,0, 0,0, 70,0} // X,Y,Z Axis Extend and Retract angles
+						/**********************************************************************\
+						* Support for a filament diameter sensor
+						* Also allows adjustment of diameter at print time (vs at slicing)
+						* Single extruder only at this point (extruder 0)
+						*
+						* Motherboards
+						* 34 - RAMPS1.4 - uses Analog input 5 on the AUX2 connector
+						* 81 - Printrboard - Uses Analog input 2 on the Exp1 connector (version B,C,D,E)
+						* 301 - Rambo - uses Analog input 3
+						* Note may require analog pins to be defined for different motherboards
+						**********************************************************************/
+						// Uncomment below to enable
+						//#define FILAMENT_SENSOR
+						#define FILAMENT_SENSOR_EXTRUDER_NUM	0 //The number of the extruder that has the filament sensor (0,1,2)
+						#define MEASUREMENT_DELAY_CM	14 //measurement delay in cm. This is the distance from filament sensor to middle of barrel
+						#define DEFAULT_NOMINAL_FILAMENT_DIA 3.0 //Enter the diameter (in mm) of the filament generally used (3.0 mm or 1.75 mm) - this is then used in the slicer software. Used for sensor reading validation
+						#define MEASURED_UPPER_LIMIT 3.30 //upper limit factor used for sensor reading validation in mm
+						#define MEASURED_LOWER_LIMIT 1.90 //lower limit factor for sensor reading validation in mm
+						#define MAX_MEASUREMENT_DELAY	20 //delay buffer size in bytes (1 byte = 1cm)- limits maximum measurement delay allowable (must be larger than MEASUREMENT_DELAY_CM and lower number saves RAM)
+						//defines used in the code
+						#define DEFAULT_MEASURED_FILAMENT_DIA DEFAULT_NOMINAL_FILAMENT_DIA //set measured to nominal initially
+						//When using an LCD, uncomment the line below to display the Filament sensor data on the last line instead of status. Status will appear for 5 sec.
+						//#define FILAMENT_LCD_DISPLAY
+						#include "Configuration_adv.h"
+						#include "thermistortables.h"
+						#endif //__CONFIGURATION_H
 
-				</textarea>
-			</div>
-			<div class="col-md-2">
-				2 - Press Here : <button>Convert</button>
-			</div>
-			<div class="col-md-5">
-				3 - Get your Smoothie <b>config</b> here !
-				<br/>(You can find a default config file for 3D printing <a href="https://raw.githubusercontent.com/Smoothieware/Smoothieware/edge/ConfigSamples/Smoothieboard/config">here in the github repository</a> or find more help on <a href="http://smoothieware.org/configuring-smoothie">configuring Smoothie</a>.
-				<br/>
-				<textarea name="smoothieconfig">
-# NOTE Lines must not exceed 132 characters
-# Robot module configurations : general handling of movement G-codes and slicing into moves
-default_feed_rate                            4000             # Default rate ( mm/minute ) for G1/G2/G3 moves
-default_seek_rate                            4000             # Default rate ( mm/minute ) for G0 moves
-mm_per_arc_segment                           0.5              # Arcs are cut into segments ( lines ), this is the length for
-# these segments.  Smaller values mean more resolution,
-# higher values mean faster computation
-#mm_per_line_segment                          5                # Lines can be cut into segments ( not usefull with cartesian
-# coordinates robots ).
+					</textarea>
 
-# Arm solution configuration : Cartesian robot. Translates mm positions into stepper positions
-alpha_steps_per_mm                           80               # Steps per mm for alpha stepper
-beta_steps_per_mm                            80               # Steps per mm for beta stepper
-gamma_steps_per_mm                           1600             # Steps per mm for gamma stepper
+				</div>
+				<div class="panel-footer">
+					<p class="help-block">(See it on the <a href="https://github.com/ErikZalm/Marlin/blob/Stable/Marlin/Configuration.h">Marlin GitHub</a>)</p>
+				</div>
+			</div> 
+			<div class="panel panel-default col-md-2">
+				<div class="panel-heading">
+					<h3 class="panel-title">2 - Press Here</h3>
+				</div>
+				<div class="panel-body">
+					<button>Convert</button>
+				</div>
+				<div class="panel-footer">To apply all the conversion rules</div>
+			</div> 
+			<div class="panel panel-default col-md-5">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						3 - Get your Smoothie <b>config</b> here !
+					</h3>
+				</div>
+				<div class="panel-body">
+					<textarea name="smoothieconfig">
+						# NOTE Lines must not exceed 132 characters
+						# Robot module configurations : general handling of movement G-codes and slicing into moves
+						default_feed_rate                            4000             # Default rate ( mm/minute ) for G1/G2/G3 moves
+						default_seek_rate                            4000             # Default rate ( mm/minute ) for G0 moves
+						mm_per_arc_segment                           0.5              # Arcs are cut into segments ( lines ), this is the length for
+						# these segments.  Smaller values mean more resolution,
+						# higher values mean faster computation
+						#mm_per_line_segment                          5                # Lines can be cut into segments ( not usefull with cartesian
+						# coordinates robots ).
 
-# Planner module configuration : Look-ahead and acceleration configuration
-planner_queue_size                           32               # DO NOT CHANGE THIS UNLESS YOU KNOW EXACTLY WHAT YOU ARE DOING
-acceleration                                 3000             # Acceleration in mm/second/second.
-#z_acceleration                              500              # Acceleration for Z only moves in mm/s^2, 0 uses acceleration which is the default. DO NOT SET ON A DELTA
-acceleration_ticks_per_second                1000             # Number of times per second the speed is updated
-junction_deviation                           0.05             # Similar to the old "max_jerk", in millimeters,
-# see https://github.com/grbl/grbl/blob/master/planner.c
-					# and https://github.com/grbl/grbl/wiki/Configuring-Grbl-v0.8
-					# Lower values mean being more careful, higher values means being
-					# faster and have more jerk
-					#z_junction_deviation                        0.0              # for Z only moves, -1 uses junction_deviation, zero disables junction_deviation on z moves DO NOT SET ON A DELTA
-					#minimum_planner_speed                       0.0              # sets the minimum planner speed in mm/sec
+						# Arm solution configuration : Cartesian robot. Translates mm positions into stepper positions
+						alpha_steps_per_mm                           80               # Steps per mm for alpha stepper
+						beta_steps_per_mm                            80               # Steps per mm for beta stepper
+						gamma_steps_per_mm                           1600             # Steps per mm for gamma stepper
 
-					# Stepper module configuration
-					microseconds_per_step_pulse                  1                # Duration of step pulses to stepper drivers, in microseconds
-					base_stepping_frequency                      100000           # Base frequency for stepping
+						# Planner module configuration : Look-ahead and acceleration configuration
+						planner_queue_size                           32               # DO NOT CHANGE THIS UNLESS YOU KNOW EXACTLY WHAT YOU ARE DOING
+						acceleration                                 3000             # Acceleration in mm/second/second.
+						#z_acceleration                              500              # Acceleration for Z only moves in mm/s^2, 0 uses acceleration which is the default. DO NOT SET ON A DELTA
+						acceleration_ticks_per_second                1000             # Number of times per second the speed is updated
+						junction_deviation                           0.05             # Similar to the old "max_jerk", in millimeters,
+						# see https://github.com/grbl/grbl/blob/master/planner.c
+						# and https://github.com/grbl/grbl/wiki/Configuring-Grbl-v0.8
+						# Lower values mean being more careful, higher values means being
+						# faster and have more jerk
+						#z_junction_deviation                        0.0              # for Z only moves, -1 uses junction_deviation, zero disables junction_deviation on z moves DO NOT SET ON A DELTA
+						#minimum_planner_speed                       0.0              # sets the minimum planner speed in mm/sec
 
-					# Cartesian axis speed limits
-					x_axis_max_speed                             30000            # mm/min
-					y_axis_max_speed                             30000            # mm/min
-					z_axis_max_speed                             300              # mm/min
+						# Stepper module configuration
+						microseconds_per_step_pulse                  1                # Duration of step pulses to stepper drivers, in microseconds
+						base_stepping_frequency                      100000           # Base frequency for stepping
 
-					# Stepper module pins ( ports, and pin numbers, appending "!" to the number will invert a pin )
-					alpha_step_pin                               2.0              # Pin for alpha stepper step signal
-					alpha_dir_pin                                0.5              # Pin for alpha stepper direction
-					alpha_en_pin                                 0.4              # Pin for alpha enable pin
-					alpha_current                                1.5              # X stepper motor current
-					alpha_max_rate                               30000.0          # mm/min
+						# Cartesian axis speed limits
+						x_axis_max_speed                             30000            # mm/min
+						y_axis_max_speed                             30000            # mm/min
+						z_axis_max_speed                             300              # mm/min
 
-					beta_step_pin                                2.1              # Pin for beta stepper step signal
-					beta_dir_pin                                 0.11             # Pin for beta stepper direction
-					beta_en_pin                                  0.10             # Pin for beta enable
-					beta_current                                 1.5              # Y stepper motor current
-					beta_max_rate                                30000.0          # mm/min
+						# Stepper module pins ( ports, and pin numbers, appending "!" to the number will invert a pin )
+						alpha_step_pin                               2.0              # Pin for alpha stepper step signal
+						alpha_dir_pin                                0.5              # Pin for alpha stepper direction
+						alpha_en_pin                                 0.4              # Pin for alpha enable pin
+						alpha_current                                1.5              # X stepper motor current
+						alpha_max_rate                               30000.0          # mm/min
 
-					gamma_step_pin                               2.2              # Pin for gamma stepper step signal
-					gamma_dir_pin                                0.20             # Pin for gamma stepper direction
-					gamma_en_pin                                 0.19             # Pin for gamma enable
-					gamma_current                                1.5              # Z stepper motor current
-					gamma_max_rate                               300.0            # mm/min
+						beta_step_pin                                2.1              # Pin for beta stepper step signal
+						beta_dir_pin                                 0.11             # Pin for beta stepper direction
+						beta_en_pin                                  0.10             # Pin for beta enable
+						beta_current                                 1.5              # Y stepper motor current
+						beta_max_rate                                30000.0          # mm/min
 
-					# Serial communications configuration ( baud rate default to 9600 if undefined )
-					uart0.baud_rate                              115200           # Baud rate for the default hardware serial port
-					second_usb_serial_enable                     false            # This enables a second usb serial port (to have both pronterface
-					# and a terminal connected)
-					#leds_disable                                true             # disable using leds after config loaded
-					#play_led_disable                            true             # disable the play led
-					pause_button_enable                          true             # Pause button enable
-					#pause_button_pin                            2.12             # pause button pin. default is P2.12
-					#kill_button_enable                           false            # set to true to enable a kill button
-					#kill_button_pin                              2.12             # kill button pin. default is same as pause button 2.12 (2.11 is another good choice)
-					#msd_disable                                 false            # disable the MSD (USB SDCARD) when set to true (needs special binary)
-					#dfu_enable                                  false            # for linux developers, set to true to enable DFU
+						gamma_step_pin                               2.2              # Pin for gamma stepper step signal
+						gamma_dir_pin                                0.20             # Pin for gamma stepper direction
+						gamma_en_pin                                 0.19             # Pin for gamma enable
+						gamma_current                                1.5              # Z stepper motor current
+						gamma_max_rate                               300.0            # mm/min
 
-					# Extruder module configuration
-					extruder.hotend.enable                          true             # Whether to activate the extruder module at all. All configuration is ignored if false
-					extruder.hotend.steps_per_mm                    140              # Steps per mm for extruder stepper
-					extruder.hotend.default_feed_rate               600              # Default rate ( mm/minute ) for moves where only the extruder moves
-					extruder.hotend.acceleration                    500              # Acceleration for the stepper motor mm/sec²
-					extruder.hotend.max_speed                       50               # mm/s
+						# Serial communications configuration ( baud rate default to 9600 if undefined )
+						uart0.baud_rate                              115200           # Baud rate for the default hardware serial port
+						second_usb_serial_enable                     false            # This enables a second usb serial port (to have both pronterface
+						# and a terminal connected)
+						#leds_disable                                true             # disable using leds after config loaded
+						#play_led_disable                            true             # disable the play led
+						pause_button_enable                          true             # Pause button enable
+						#pause_button_pin                            2.12             # pause button pin. default is P2.12
+						#kill_button_enable                           false            # set to true to enable a kill button
+						#kill_button_pin                              2.12             # kill button pin. default is same as pause button 2.12 (2.11 is another good choice)
+						#msd_disable                                 false            # disable the MSD (USB SDCARD) when set to true (needs special binary)
+						#dfu_enable                                  false            # for linux developers, set to true to enable DFU
 
-					extruder.hotend.step_pin                        2.3              # Pin for extruder step signal
-					extruder.hotend.dir_pin                         0.22             # Pin for extruder dir signal
-					extruder.hotend.en_pin                          0.21             # Pin for extruder enable signal
+						# Extruder module configuration
+						extruder.hotend.enable                          true             # Whether to activate the extruder module at all. All configuration is ignored if false
+						extruder.hotend.steps_per_mm                    140              # Steps per mm for extruder stepper
+						extruder.hotend.default_feed_rate               600              # Default rate ( mm/minute ) for moves where only the extruder moves
+						extruder.hotend.acceleration                    500              # Acceleration for the stepper motor mm/sec²
+						extruder.hotend.max_speed                       50               # mm/s
 
-					# extruder offset
-					#extruder.hotend.x_offset                        0                # x offset from origin in mm
-					#extruder.hotend.y_offset                        0                # y offset from origin in mm
-					#extruder.hotend.z_offset                        0                # z offset from origin in mm
+						extruder.hotend.step_pin                        2.3              # Pin for extruder step signal
+						extruder.hotend.dir_pin                         0.22             # Pin for extruder dir signal
+						extruder.hotend.en_pin                          0.21             # Pin for extruder enable signal
 
-					# firmware retract settings when using G10/G11, these are the defaults if not defined, must be defined for each extruder if not using the defaults
-					#extruder.hotend.retract_length                  3               # retract length in mm
-					#extruder.hotend.retract_feedrate                45              # retract feedrate in mm/sec
-					#extruder.hotend.retract_recover_length          0               # additional length for recover
-					#extruder.hotend.retract_recover_feedrate        8               # recover feedrate in mm/sec (should be less than retract feedrate)
-					#extruder.hotend.retract_zlift_length            0               # zlift on retract in mm, 0 disables
-					#extruder.hotend.retract_zlift_feedrate          6000            # zlift feedrate in mm/min (Note mm/min NOT mm/sec)
+						# extruder offset
+						#extruder.hotend.x_offset                        0                # x offset from origin in mm
+						#extruder.hotend.y_offset                        0                # y offset from origin in mm
+						#extruder.hotend.z_offset                        0                # z offset from origin in mm
 
-					delta_current                                1.5              # First extruder stepper motor current
+						# firmware retract settings when using G10/G11, these are the defaults if not defined, must be defined for each extruder if not using the defaults
+						#extruder.hotend.retract_length                  3               # retract length in mm
+						#extruder.hotend.retract_feedrate                45              # retract feedrate in mm/sec
+						#extruder.hotend.retract_recover_length          0               # additional length for recover
+						#extruder.hotend.retract_recover_feedrate        8               # recover feedrate in mm/sec (should be less than retract feedrate)
+						#extruder.hotend.retract_zlift_length            0               # zlift on retract in mm, 0 disables
+						#extruder.hotend.retract_zlift_feedrate          6000            # zlift feedrate in mm/min (Note mm/min NOT mm/sec)
 
-					# Second extruder module configuration
-					#extruder.hotend2.enable                          true             # Whether to activate the extruder module at all. All configuration is ignored if false
-					#extruder.hotend2.steps_per_mm                    140              # Steps per mm for extruder stepper
-					#extruder.hotend2.default_feed_rate               600              # Default rate ( mm/minute ) for moves where only the extruder moves
-					#extruder.hotend2.acceleration                    500              # Acceleration for the stepper motor, as of 0.6, arbitrary ratio
-					#extruder.hotend2.max_speed                       50               # mm/s
+						delta_current                                1.5              # First extruder stepper motor current
 
-					#extruder.hotend2.step_pin                        2.8              # Pin for extruder step signal
-					#extruder.hotend2.dir_pin                         2.13             # Pin for extruder dir signal
-					#extruder.hotend2.en_pin                          4.29             # Pin for extruder enable signal
+						# Second extruder module configuration
+						#extruder.hotend2.enable                          true             # Whether to activate the extruder module at all. All configuration is ignored if false
+						#extruder.hotend2.steps_per_mm                    140              # Steps per mm for extruder stepper
+						#extruder.hotend2.default_feed_rate               600              # Default rate ( mm/minute ) for moves where only the extruder moves
+						#extruder.hotend2.acceleration                    500              # Acceleration for the stepper motor, as of 0.6, arbitrary ratio
+						#extruder.hotend2.max_speed                       50               # mm/s
 
-					#extruder.hotend2.x_offset                        0                # x offset from origin in mm
-					#extruder.hotend2.y_offset                        25.0             # y offset from origin in mm
-					#extruder.hotend2.z_offset                        0                # z offset from origin in mm
-					#epsilon_current                              1.5              # Second extruder stepper motor current
+						#extruder.hotend2.step_pin                        2.8              # Pin for extruder step signal
+						#extruder.hotend2.dir_pin                         2.13             # Pin for extruder dir signal
+						#extruder.hotend2.en_pin                          4.29             # Pin for extruder enable signal
+
+						#extruder.hotend2.x_offset                        0                # x offset from origin in mm
+						#extruder.hotend2.y_offset                        25.0             # y offset from origin in mm
+						#extruder.hotend2.z_offset                        0                # z offset from origin in mm
+						#epsilon_current                              1.5              # Second extruder stepper motor current
 
 
-					# Laser module configuration
-					laser_module_enable                          false            # Whether to activate the laser module at all. All configuration is
-					# ignored if false.
-					#laser_module_pin                             2.5             # this pin will be PWMed to control the laser. Only P2.0 - P2.5, P1.18, P1.20, P1.21, P1.23, P1.24, P1.26, P3.25, P3.26
-					# can be used since laser requires hardware PWM
-					#laser_module_max_power                       0.8             # this is the maximum duty cycle that will be applied to the laser
-					#laser_module_tickle_power                    0.0             # this duty cycle will be used for travel moves to keep the laser
-					# active without actually burning
-					#laser_module_pwm_period                      20              # this sets the pwm frequency as the period in microseconds
+						# Laser module configuration
+						laser_module_enable                          false            # Whether to activate the laser module at all. All configuration is
+						# ignored if false.
+						#laser_module_pin                             2.5             # this pin will be PWMed to control the laser. Only P2.0 - P2.5, P1.18, P1.20, P1.21, P1.23, P1.24, P1.26, P3.25, P3.26
+						# can be used since laser requires hardware PWM
+						#laser_module_max_power                       0.8             # this is the maximum duty cycle that will be applied to the laser
+						#laser_module_tickle_power                    0.0             # this duty cycle will be used for travel moves to keep the laser
+						# active without actually burning
+						#laser_module_pwm_period                      20              # this sets the pwm frequency as the period in microseconds
 
-					# Hotend temperature control configuration
-					temperature_control.hotend.enable            true             # Whether to activate this ( "hotend" ) module at all.
-					# All configuration is ignored if false.
-					temperature_control.hotend.thermistor_pin    0.23             # Pin for the thermistor to read
-					temperature_control.hotend.heater_pin        2.7              # Pin that controls the heater, set to nc if a readonly thermistor is being defined
-					temperature_control.hotend.thermistor        EPCOS100K        # see http://smoothieware.org/temperaturecontrol#toc5
-					#temperature_control.hotend.beta             4066             # or set the beta value
-					temperature_control.hotend.set_m_code        104              #
-					temperature_control.hotend.set_and_wait_m_code 109            #
-					temperature_control.hotend.designator        T                #
-					#temperature_control.hotend.max_temp         250              # Set maximum temperature
-					#temperature_control.hotend.min_temp         0                # Set minimum temperature - Will prevent heating below if set
+						# Hotend temperature control configuration
+						temperature_control.hotend.enable            true             # Whether to activate this ( "hotend" ) module at all.
+						# All configuration is ignored if false.
+						temperature_control.hotend.thermistor_pin    0.23             # Pin for the thermistor to read
+						temperature_control.hotend.heater_pin        2.7              # Pin that controls the heater, set to nc if a readonly thermistor is being defined
+						temperature_control.hotend.thermistor        EPCOS100K        # see http://smoothieware.org/temperaturecontrol#toc5
+						#temperature_control.hotend.beta             4066             # or set the beta value
+						temperature_control.hotend.set_m_code        104              #
+						temperature_control.hotend.set_and_wait_m_code 109            #
+						temperature_control.hotend.designator        T                #
+						#temperature_control.hotend.max_temp         250              # Set maximum temperature
+						#temperature_control.hotend.min_temp         0                # Set minimum temperature - Will prevent heating below if set
 
-					#temperature_control.hotend.p_factor         13.7             # permanently set the PID values after an auto pid
-					#temperature_control.hotend.i_factor         0.097            #
-					#temperature_control.hotend.d_factor         24               #
+						#temperature_control.hotend.p_factor         13.7             # permanently set the PID values after an auto pid
+						#temperature_control.hotend.i_factor         0.097            #
+						#temperature_control.hotend.d_factor         24               #
 
-					#temperature_control.hotend.max_pwm          64               # max pwm, 64 is a good value if driving a 12v resistor with 24v.
+						#temperature_control.hotend.max_pwm          64               # max pwm, 64 is a good value if driving a 12v resistor with 24v.
 
-					# Hotend2 temperature control configuration
-					#temperature_control.hotend2.enable            true             # Whether to activate this ( "hotend" ) module at all.
-					# All configuration is ignored if false.
+						# Hotend2 temperature control configuration
+						#temperature_control.hotend2.enable            true             # Whether to activate this ( "hotend" ) module at all.
+						# All configuration is ignored if false.
 
-					#temperature_control.hotend2.thermistor_pin    0.25             # Pin for the thermistor to read
-					#temperature_control.hotend2.heater_pin        1.23             # Pin that controls the heater
-					#temperature_control.hotend2.thermistor        EPCOS100K        # see http://smoothieware.org/temperaturecontrol#toc5
-					##temperature_control.hotend2.beta             4066             # or set the beta value
-					#temperature_control.hotend2.set_m_code        884              #
-					#temperature_control.hotend2.set_and_wait_m_code 889            #
-					#temperature_control.hotend2.designator        T1               #
+						#temperature_control.hotend2.thermistor_pin    0.25             # Pin for the thermistor to read
+						#temperature_control.hotend2.heater_pin        1.23             # Pin that controls the heater
+						#temperature_control.hotend2.thermistor        EPCOS100K        # see http://smoothieware.org/temperaturecontrol#toc5
+						##temperature_control.hotend2.beta             4066             # or set the beta value
+						#temperature_control.hotend2.set_m_code        884              #
+						#temperature_control.hotend2.set_and_wait_m_code 889            #
+						#temperature_control.hotend2.designator        T1               #
 
-					#temperature_control.hotend2.p_factor          13.7           # permanently set the PID values after an auto pid
-					#temperature_control.hotend2.i_factor          0.097          #
-					#temperature_control.hotend2.d_factor          24             #
+						#temperature_control.hotend2.p_factor          13.7           # permanently set the PID values after an auto pid
+						#temperature_control.hotend2.i_factor          0.097          #
+						#temperature_control.hotend2.d_factor          24             #
 
-					#temperature_control.hotend2.max_pwm          64               # max pwm, 64 is a good value if driving a 12v resistor with 24v.
+						#temperature_control.hotend2.max_pwm          64               # max pwm, 64 is a good value if driving a 12v resistor with 24v.
 
-					temperature_control.bed.enable               true             #
-					temperature_control.bed.thermistor_pin       0.24             #
-					temperature_control.bed.heater_pin           2.5              #
-					temperature_control.bed.thermistor           Honeywell100K    # see http://smoothieware.org/temperaturecontrol#toc5
-					#temperature_control.bed.beta                3974             # or set the beta value
+						temperature_control.bed.enable               true             #
+						temperature_control.bed.thermistor_pin       0.24             #
+						temperature_control.bed.heater_pin           2.5              #
+						temperature_control.bed.thermistor           Honeywell100K    # see http://smoothieware.org/temperaturecontrol#toc5
+						#temperature_control.bed.beta                3974             # or set the beta value
 
-					temperature_control.bed.set_m_code           140              #
-					temperature_control.bed.set_and_wait_m_code  190              #
-					temperature_control.bed.designator           B                #
+						temperature_control.bed.set_m_code           140              #
+						temperature_control.bed.set_and_wait_m_code  190              #
+						temperature_control.bed.designator           B                #
 
-					#temperature_control.bed.bang_bang            false           # set to true to use bang bang control rather than PID
-					#temperature_control.bed.hysteresis           2.0             # set to the temperature in degrees C to use as hysteresis
-					# when using bang bang
+						#temperature_control.bed.bang_bang            false           # set to true to use bang bang control rather than PID
+						#temperature_control.bed.hysteresis           2.0             # set to the temperature in degrees C to use as hysteresis
+						# when using bang bang
 
-					# Switch module for fan control
-					switch.fan.enable                            true             #
-					switch.fan.input_on_command                  M106             #
-					switch.fan.input_off_command                 M107             #
-					switch.fan.output_pin                        2.6              #
-					switch.fan.output_type                       pwm              # pwm output settable with S parameter in the input_on_comand
-					#switch.fan.max_pwm                           255              # set max pwm for the pin default is 255
+						# Switch module for fan control
+						switch.fan.enable                            true             #
+						switch.fan.input_on_command                  M106             #
+						switch.fan.input_off_command                 M107             #
+						switch.fan.output_pin                        2.6              #
+						switch.fan.output_type                       pwm              # pwm output settable with S parameter in the input_on_comand
+						#switch.fan.max_pwm                           255              # set max pwm for the pin default is 255
 
-					#switch.misc.enable                           true             #
-					#switch.misc.input_on_command                 M42              #
-					#switch.misc.input_off_command                M43              #
-					#switch.misc.output_pin                       2.4              #
-					#switch.misc.output_type                      digital          # just an on or off pin
+						#switch.misc.enable                           true             #
+						#switch.misc.input_on_command                 M42              #
+						#switch.misc.input_off_command                M43              #
+						#switch.misc.output_pin                       2.4              #
+						#switch.misc.output_type                      digital          # just an on or off pin
 
-					# automatically toggle a switch at a specified temperature. Different ones of these may be defined to monitor different temperatures and switch different swithxes
-					# useful to turn on a fan or water pump to cool the hotend
-					#temperatureswitch.hotend.enable              true             #
-					#temperatureswitch.hotend.designator          T                # first character of the temperature control designator to use as the temperature sensor to monitor
-					#temperatureswitch.hotend.switch              misc             # select which switch to use, matches the name of the defined switch
-					#temperatureswitch.hotend.threshold_temp      60.0             # temperature to turn on (if rising) or off the switch
-					#temperatureswitch.hotend.heatup_poll         15               # poll heatup at 15 sec intervals
-					#temperatureswitch.hotend.cooldown_poll       60               # poll cooldown at 60 sec intervals
+						# automatically toggle a switch at a specified temperature. Different ones of these may be defined to monitor different temperatures and switch different swithxes
+						# useful to turn on a fan or water pump to cool the hotend
+						#temperatureswitch.hotend.enable              true             #
+						#temperatureswitch.hotend.designator          T                # first character of the temperature control designator to use as the temperature sensor to monitor
+						#temperatureswitch.hotend.switch              misc             # select which switch to use, matches the name of the defined switch
+						#temperatureswitch.hotend.threshold_temp      60.0             # temperature to turn on (if rising) or off the switch
+						#temperatureswitch.hotend.heatup_poll         15               # poll heatup at 15 sec intervals
+						#temperatureswitch.hotend.cooldown_poll       60               # poll cooldown at 60 sec intervals
 
-					# Switch module for spindle control
-					#switch.spindle.enable                        false            #
+						# Switch module for spindle control
+						#switch.spindle.enable                        false            #
 
-					# Endstops
-					endstops_enable                              true             # the endstop module is enabled by default and can be disabled here
-					#corexy_homing                               false            # set to true if homing on a hbit or corexy
-					alpha_min_endstop                            1.24^            # add a ! to invert if endstop is NO connected to ground
-					alpha_max_endstop                            1.25^            # NOTE set to nc if this is not installed
-					alpha_homing_direction                       home_to_min      # or set to home_to_max and set alpha_max
-					alpha_min                                    0                # this gets loaded after homing when home_to_min is set
-					alpha_max                                    200              # this gets loaded after homing when home_to_max is set
-					beta_min_endstop                             1.26^            #
-					beta_max_endstop                             1.27^            #
-					beta_homing_direction                        home_to_min      #
-					beta_min                                     0                #
-					beta_max                                     200              #
-					gamma_min_endstop                            1.28^            #
-					gamma_max_endstop                            1.29^            #
-					gamma_homing_direction                       home_to_min      #
-					gamma_min                                    0                #
-					gamma_max                                    200              #
+						# Endstops
+						endstops_enable                              true             # the endstop module is enabled by default and can be disabled here
+						#corexy_homing                               false            # set to true if homing on a hbit or corexy
+						alpha_min_endstop                            1.24^            # add a ! to invert if endstop is NO connected to ground
+						alpha_max_endstop                            1.25^            # NOTE set to nc if this is not installed
+						alpha_homing_direction                       home_to_min      # or set to home_to_max and set alpha_max
+						alpha_min                                    0                # this gets loaded after homing when home_to_min is set
+						alpha_max                                    200              # this gets loaded after homing when home_to_max is set
+						beta_min_endstop                             1.26^            #
+						beta_max_endstop                             1.27^            #
+						beta_homing_direction                        home_to_min      #
+						beta_min                                     0                #
+						beta_max                                     200              #
+						gamma_min_endstop                            1.28^            #
+						gamma_max_endstop                            1.29^            #
+						gamma_homing_direction                       home_to_min      #
+						gamma_min                                    0                #
+						gamma_max                                    200              #
 
-					# optional order in which axis will home, default is they all home at the same time,
-					# if this is set it will force each axis to home one at a time in the specified order
-					#homing_order                                 XYZ              # x axis followed by y then z last
+						# optional order in which axis will home, default is they all home at the same time,
+						# if this is set it will force each axis to home one at a time in the specified order
+						#homing_order                                 XYZ              # x axis followed by y then z last
 
-					# optional enable limit switches, actions will stop if any enabled limit switch is triggered
-					#alpha_limit_enable                          false            # set to true to enable X min and max limit switches
-					#beta_limit_enable                           false            # set to true to enable Y min and max limit switches
-					#gamma_limit_enable                          false            # set to true to enable Z min and max limit switches
+						# optional enable limit switches, actions will stop if any enabled limit switch is triggered
+						#alpha_limit_enable                          false            # set to true to enable X min and max limit switches
+						#beta_limit_enable                           false            # set to true to enable Y min and max limit switches
+						#gamma_limit_enable                          false            # set to true to enable Z min and max limit switches
 
-					alpha_fast_homing_rate_mm_s                  50               # feedrates in mm/second
-					beta_fast_homing_rate_mm_s                   50               # "
-					gamma_fast_homing_rate_mm_s                  4                # "
-					alpha_slow_homing_rate_mm_s                  25               # "
-					beta_slow_homing_rate_mm_s                   25               # "
-					gamma_slow_homing_rate_mm_s                  2                # "
+						alpha_fast_homing_rate_mm_s                  50               # feedrates in mm/second
+						beta_fast_homing_rate_mm_s                   50               # "
+						gamma_fast_homing_rate_mm_s                  4                # "
+						alpha_slow_homing_rate_mm_s                  25               # "
+						beta_slow_homing_rate_mm_s                   25               # "
+						gamma_slow_homing_rate_mm_s                  2                # "
 
-					alpha_homing_retract_mm                      5                # distance in mm
-					beta_homing_retract_mm                       5                # "
-					gamma_homing_retract_mm                      1                # "
+						alpha_homing_retract_mm                      5                # distance in mm
+						beta_homing_retract_mm                       5                # "
+						gamma_homing_retract_mm                      1                # "
 
-					#endstop_debounce_count                       100              # uncomment if you get noise on your endstops, default is 100
+						#endstop_debounce_count                       100              # uncomment if you get noise on your endstops, default is 100
 
-					# optional Z probe
-					zprobe.enable                                false           # set to true to enable a zprobe
-					zprobe.probe_pin                             1.28!^          # pin probe is attached to if NC remove the !
-					zprobe.slow_feedrate                         5               # mm/sec probe feed rate
-					#zprobe.debounce_count                       100             # set if noisy
-					zprobe.fast_feedrate                         100             # move feedrate mm/sec
-					zprobe.probe_height                          5               # how much above bed to start probe
-					#gamma_min_endstop                           nc              # normally 1.28. Change to nc to prevent conflict,
+						# optional Z probe
+						zprobe.enable                                false           # set to true to enable a zprobe
+						zprobe.probe_pin                             1.28!^          # pin probe is attached to if NC remove the !
+						zprobe.slow_feedrate                         5               # mm/sec probe feed rate
+						#zprobe.debounce_count                       100             # set if noisy
+						zprobe.fast_feedrate                         100             # move feedrate mm/sec
+						zprobe.probe_height                          5               # how much above bed to start probe
+						#gamma_min_endstop                           nc              # normally 1.28. Change to nc to prevent conflict,
 
-					# associated with zprobe the leveling strategy to use
-					#leveling-strategy.three-point-leveling.enable         true        # a leveling strategy that probes three points to define a plane and keeps the Z parallel to that plane
-					#leveling-strategy.three-point-leveling.point1         100.0,0.0   # the first probe point (x,y) optional may be defined with M557
-					#leveling-strategy.three-point-leveling.point2         200.0,200.0 # the second probe point (x,y)
-					#leveling-strategy.three-point-leveling.point3         0.0,200.0   # the third probe point (x,y)
-					#leveling-strategy.three-point-leveling.home_first     true        # home the XY axis before probing
-					#leveling-strategy.three-point-leveling.tolerance      0.03        # the probe tolerance in mm, anything less that this will be ignored, default is 0.03mm
-					#leveling-strategy.three-point-leveling.probe_offsets  0,0,0       # the probe offsets from nozzle, must be x,y,z, default is no offset
-					#leveling-strategy.three-point-leveling.save_plane     false       # set to true to allow the bed plane to be saved with M500 default is false
+						# associated with zprobe the leveling strategy to use
+						#leveling-strategy.three-point-leveling.enable         true        # a leveling strategy that probes three points to define a plane and keeps the Z parallel to that plane
+						#leveling-strategy.three-point-leveling.point1         100.0,0.0   # the first probe point (x,y) optional may be defined with M557
+						#leveling-strategy.three-point-leveling.point2         200.0,200.0 # the second probe point (x,y)
+						#leveling-strategy.three-point-leveling.point3         0.0,200.0   # the third probe point (x,y)
+						#leveling-strategy.three-point-leveling.home_first     true        # home the XY axis before probing
+						#leveling-strategy.three-point-leveling.tolerance      0.03        # the probe tolerance in mm, anything less that this will be ignored, default is 0.03mm
+						#leveling-strategy.three-point-leveling.probe_offsets  0,0,0       # the probe offsets from nozzle, must be x,y,z, default is no offset
+						#leveling-strategy.three-point-leveling.save_plane     false       # set to true to allow the bed plane to be saved with M500 default is false
 
-					# Panel
-					panel.enable                                 false             # set to true to enable the panel code
-					panel.lcd                                    smoothiepanel     # set type of panel
-					panel.encoder_a_pin                          3.25!^            # encoder pin
-					panel.encoder_b_pin                          3.26!^            # encoder pin
+						# Panel
+						panel.enable                                 false             # set to true to enable the panel code
+						panel.lcd                                    smoothiepanel     # set type of panel
+						panel.encoder_a_pin                          3.25!^            # encoder pin
+						panel.encoder_b_pin                          3.26!^            # encoder pin
 
-					# Example for reprap discount GLCD
-					# on glcd EXP1 is to left and EXP2 is to right, pin 1 is bottom left, pin 2 is top left etc.
-					# +5v is EXP1 pin 10, Gnd is EXP1 pin 9
-					#panel.lcd                                   reprap_discount_glcd     #
-					#panel.spi_channel                           0                 # spi channel to use  ; GLCD EXP1 Pins 3,5 (MOSI, SCLK)
-					#panel.spi_cs_pin                            0.16              # spi chip select     ; GLCD EXP1 Pin 4
-					#panel.encoder_a_pin                         3.25!^            # encoder pin         ; GLCD EXP2 Pin 3
-					#panel.encoder_b_pin                         3.26!^            # encoder pin         ; GLCD EXP2 Pin 5
-					#panel.click_button_pin                      1.30!^            # click button        ; GLCD EXP1 Pin 2
-					#panel.buzz_pin                              1.31              # pin for buzzer      ; GLCD EXP1 Pin 1
-					#panel.back_button_pin                       2.11!^            # back button         ; GLCD EXP2 Pin 8
+						# Example for reprap discount GLCD
+						# on glcd EXP1 is to left and EXP2 is to right, pin 1 is bottom left, pin 2 is top left etc.
+						# +5v is EXP1 pin 10, Gnd is EXP1 pin 9
+						#panel.lcd                                   reprap_discount_glcd     #
+						#panel.spi_channel                           0                 # spi channel to use  ; GLCD EXP1 Pins 3,5 (MOSI, SCLK)
+						#panel.spi_cs_pin                            0.16              # spi chip select     ; GLCD EXP1 Pin 4
+						#panel.encoder_a_pin                         3.25!^            # encoder pin         ; GLCD EXP2 Pin 3
+						#panel.encoder_b_pin                         3.26!^            # encoder pin         ; GLCD EXP2 Pin 5
+						#panel.click_button_pin                      1.30!^            # click button        ; GLCD EXP1 Pin 2
+						#panel.buzz_pin                              1.31              # pin for buzzer      ; GLCD EXP1 Pin 1
+						#panel.back_button_pin                       2.11!^            # back button         ; GLCD EXP2 Pin 8
 
-					# pins used with other panels
-					#panel.up_button_pin                         0.1!              # up button if used
-					#panel.down_button_pin                       0.0!              # down button if used
-					#panel.click_button_pin                      0.18!             # click button if used
+						# pins used with other panels
+						#panel.up_button_pin                         0.1!              # up button if used
+						#panel.down_button_pin                       0.0!              # down button if used
+						#panel.click_button_pin                      0.18!             # click button if used
 
-					panel.menu_offset                            0                 # some panels will need 1 here
+						panel.menu_offset                            0                 # some panels will need 1 here
 
-					panel.alpha_jog_feedrate                     6000              # x jogging feedrate in mm/min
-					panel.beta_jog_feedrate                      6000              # y jogging feedrate in mm/min
-					panel.gamma_jog_feedrate                     200               # z jogging feedrate in mm/min
+						panel.alpha_jog_feedrate                     6000              # x jogging feedrate in mm/min
+						panel.beta_jog_feedrate                      6000              # y jogging feedrate in mm/min
+						panel.gamma_jog_feedrate                     200               # z jogging feedrate in mm/min
 
-					panel.hotend_temperature                     185               # temp to set hotend when preheat is selected
-					panel.bed_temperature                        60                # temp to set bed when preheat is selected
+						panel.hotend_temperature                     185               # temp to set hotend when preheat is selected
+						panel.bed_temperature                        60                # temp to set bed when preheat is selected
 
-					# Example of a custom menu entry, which will show up in the Custom entry.
-					# NOTE _ gets converted to space in the menu and commands, | is used to separate multiple commands
-					custom_menu.power_on.enable                true              #
-					custom_menu.power_on.name                  Power_on          #
-					custom_menu.power_on.command               M80               #
+						# Example of a custom menu entry, which will show up in the Custom entry.
+						# NOTE _ gets converted to space in the menu and commands, | is used to separate multiple commands
+						custom_menu.power_on.enable                true              #
+						custom_menu.power_on.name                  Power_on          #
+						custom_menu.power_on.command               M80               #
 
-					custom_menu.power_off.enable               true              #
-					custom_menu.power_off.name                 Power_off         #
-					custom_menu.power_off.command              M81               #
+						custom_menu.power_off.enable               true              #
+						custom_menu.power_off.name                 Power_off         #
+						custom_menu.power_off.command              M81               #
 
-					# Only needed on a smoothieboard
-					currentcontrol_module_enable                 true             #
+						# Only needed on a smoothieboard
+						currentcontrol_module_enable                 true             #
 
-					return_error_on_unhandled_gcode              false            #
+						return_error_on_unhandled_gcode              false            #
 
-					# network settings
-					network.enable                               false            # enable the ethernet network services
-					network.webserver.enable                     true             # enable the webserver
-					network.telnet.enable                        true             # enable the telnet server
-					network.ip_address                           auto             # use dhcp to get ip address
-					# uncomment the 3 below to manually setup ip address
-					#network.ip_address                           192.168.3.222    # the IP address
-					#network.ip_mask                              255.255.255.0    # the ip mask
-					#network.ip_gateway                           192.168.3.1      # the gateway address
-					#network.mac_override                         xx.xx.xx.xx.xx.xx  # override the mac address, only do this if you have a conflict
+						# network settings
+						network.enable                               false            # enable the ethernet network services
+						network.webserver.enable                     true             # enable the webserver
+						network.telnet.enable                        true             # enable the telnet server
+						network.ip_address                           auto             # use dhcp to get ip address
+						# uncomment the 3 below to manually setup ip address
+						#network.ip_address                           192.168.3.222    # the IP address
+						#network.ip_mask                              255.255.255.0    # the ip mask
+						#network.ip_gateway                           192.168.3.1      # the gateway address
+						#network.mac_override                         xx.xx.xx.xx.xx.xx  # override the mac address, only do this if you have a conflict
 
-					# Drills module
-					# Implement the Canned Drilling Cycles
-					# G80-83, G98, G99 in absolute mode only
-					# Incremental mode not implemented (L)
-					drillingcycles.enable                                false # enable module, default false
-					drillingcycles.dwell_units                           S     # dwell units [S = seconds, P = millis], default: S
+						# Drills module
+						# Implement the Canned Drilling Cycles
+						# G80-83, G98, G99 in absolute mode only
+						# Incremental mode not implemented (L)
+						drillingcycles.enable                                false # enable module, default false
+						drillingcycles.dwell_units                           S     # dwell units [S = seconds, P = millis], default: S
 
-				</textarea>
-			</div>
+					</textarea>
+				</div>
+				<div class="panel-footer">
+					<p class="help-block">(You can find a default config file for 3D printing <a href="https://raw.githubusercontent.com/Smoothieware/Smoothieware/edge/ConfigSamples/Smoothieboard/config">here in the github repository</a> or find more help on <a href="http://smoothieware.org/configuring-smoothie">configuring Smoothie</a>.
+				</div>
+			</div> 
 		</div>
-		<div class="col-md-12">
+		<div class="alert alert-success col-md-6">
 			4 - Check this config file to be sure it's fulfils your needs.
-			<br/>5 - Check this config file to be sure it's fulfils your needs.
-			<br/>6 - If you don't have checked this config file to be sure it's fulfils your needs, it's time to check it... Really !
-			<br/>7 - Test and Prey (-:
 		</div>
+		<div class="alert alert-info col-md-6">
+			5 - Check this config file to be sure it's fulfils your needs.
+		</div>
+		<div class="alert alert-warning col-md-12">
+			6 - If you don't have checked this config file to be sure it's fulfils your needs, it's time to check it... Really !
+		</div>
+		<div class="alert alert-danger col-md-12">
+			7 - Test and Prey (-:
+		</div>
+		
+		
 		<div name="contact" class="footer">marlin2smoothie by Rom1deTroyes - CC-BY-SA - 2015</div>
 
 

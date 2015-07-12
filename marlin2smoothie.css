@@ -7,7 +7,6 @@ textarea {
 	width:98%;
 }
 
-
 .about {
 	padding: 40px 15px;
 	text-align: center;
@@ -18,71 +17,8 @@ textarea {
 	text-align: center;
 }
 
-.row {
-	margin-right: -15px;
-	margin-left: -15px;
-}
-
 [class*="col-"], footer {
-	background-color: lightgrey;
-	border: 2px solid black;
 	border-radius: 6px;
 	line-height: 40px;
 	text-align: center;
 }
-
-
-
-.col-lg-offset-1 {
-	margin-left: 8%;
-} 
-
-.col-lg-offset-2 {
-	margin-left: 16%;
-}
-.col-lg-offset-3 {
-	margin-left: 25%;
-}
-.col-lg-offset-4 {
-	margin-left: 32%;
-}
-.col-lg-offset-5 {
-	margin-left: 40%;
-} 
-.col-lg-offset-6 {
-	margin-left: 50%;
-}
-.col-lg-offset-7 {
-	margin-left: 56%;
-}
-.col-lg-offset-8 {
-	margin-left: 64%;
-}
-.col-lg-offset-9 {
-	margin-left: 72%;
-}
-.col-lg-offset-10 {
-	margin-left: 80%;
-}
-.col-lg-offset-11 {
-	margin-left: 88%;
-}
-.col-lg-offset-12 {
-	margin-left: 100%;
-} 
-
-.colLeft {
-	background-color: lightblue;
-	border: 2px solid black;
-	border-radius: 6px;
-	line-height: 40px;
-	text-align: center;
-} 
-
-.colRight {
-	background-color: lightgreen;
-	border: 2px solid black;
-	border-radius: 6px;
-	line-height: 40px;
-	text-align: center;
-} 
